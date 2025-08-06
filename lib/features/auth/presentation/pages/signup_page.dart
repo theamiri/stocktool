@@ -51,38 +51,13 @@ class _SignupPageState extends State<SignupPage> {
           child: Column(
             children: [
               // Top section with logo and branding
-              Expanded(
-                flex: 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/app_logo.png',
-                      width: 120,
-                      height: 120,
-                      fit: BoxFit.contain,
-                    ),
-                    const SizedBox(height: 24),
-                    Text(
-                      AuthConstants.appTitle,
-                      style: const TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.w900,
-                        color: AuthConstants.textColor,
-                        letterSpacing: 2.0,
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Text(
-                      AuthConstants.appSubtitle,
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.w300,
-                        color: AuthConstants.textColor,
-                      ),
-                    ),
-                  ],
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 60),
+                child: Image.asset(
+                  'assets/images/app_logo.png',
+                  width: 180,
+                  height: 180,
+                  fit: BoxFit.contain,
                 ),
               ),
 
@@ -94,7 +69,11 @@ class _SignupPageState extends State<SignupPage> {
                     // First Name field
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color:
+                            _firstNameController.text.isEmpty &&
+                                !_firstNameFocusNode.hasFocus
+                            ? Colors.grey[100]
+                            : Colors.white,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: _firstNameFocusNode.hasFocus
@@ -107,6 +86,7 @@ class _SignupPageState extends State<SignupPage> {
                         controller: _firstNameController,
                         focusNode: _firstNameFocusNode,
                         onTap: () => setState(() {}),
+                        onChanged: (value) => setState(() {}),
                         decoration: const InputDecoration(
                           hintText: 'First Name',
                           border: InputBorder.none,
@@ -122,7 +102,11 @@ class _SignupPageState extends State<SignupPage> {
                     // Last Name field
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color:
+                            _lastNameController.text.isEmpty &&
+                                !_lastNameFocusNode.hasFocus
+                            ? Colors.grey[100]
+                            : Colors.white,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: _lastNameFocusNode.hasFocus
@@ -135,6 +119,7 @@ class _SignupPageState extends State<SignupPage> {
                         controller: _lastNameController,
                         focusNode: _lastNameFocusNode,
                         onTap: () => setState(() {}),
+                        onChanged: (value) => setState(() {}),
                         decoration: const InputDecoration(
                           hintText: 'Last Name',
                           border: InputBorder.none,
@@ -150,7 +135,11 @@ class _SignupPageState extends State<SignupPage> {
                     // Email field
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color:
+                            _emailController.text.isEmpty &&
+                                !_emailFocusNode.hasFocus
+                            ? Colors.grey[100]
+                            : Colors.white,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: _emailFocusNode.hasFocus
@@ -163,6 +152,7 @@ class _SignupPageState extends State<SignupPage> {
                         controller: _emailController,
                         focusNode: _emailFocusNode,
                         onTap: () => setState(() {}),
+                        onChanged: (value) => setState(() {}),
                         decoration: const InputDecoration(
                           hintText: 'Email',
                           border: InputBorder.none,
@@ -178,7 +168,11 @@ class _SignupPageState extends State<SignupPage> {
                     // Password field
                     Container(
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color:
+                            _passwordController.text.isEmpty &&
+                                !_passwordFocusNode.hasFocus
+                            ? Colors.grey[100]
+                            : Colors.white,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: _passwordFocusNode.hasFocus
@@ -191,6 +185,7 @@ class _SignupPageState extends State<SignupPage> {
                         controller: _passwordController,
                         focusNode: _passwordFocusNode,
                         onTap: () => setState(() {}),
+                        onChanged: (value) => setState(() {}),
                         obscureText: !_isPasswordVisible,
                         decoration: InputDecoration(
                           hintText: 'Password',
