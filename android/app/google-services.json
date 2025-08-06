@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "49655898837",
+    "project_id": "stocktool-5f0e2",
+    "storage_bucket": "stocktool-5f0e2.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:49655898837:android:924367c3c502379228385c",
+        "android_client_info": {
+          "package_name": "com.amiri.stocktool"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDD8rkSWatQo9xCdpN0spTydBs1IZSGXOI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
