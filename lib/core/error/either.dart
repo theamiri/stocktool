@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'failures.dart';
 
 abstract class Either<L, R> extends Equatable {
   const Either();
