@@ -9,7 +9,7 @@ import '../../domain/usecases/sign_in_usecase.dart';
 import '../../domain/usecases/sign_up_usecase.dart';
 import '../../domain/usecases/sign_out_usecase.dart';
 import '../../domain/usecases/get_current_user_usecase.dart';
-import '../../data/repositories/auth_repository_impl.dart';
+import '../../domain/repositories/auth_repository.dart';
 import '../../../../core/usecases/usecase.dart';
 
 // Events
@@ -98,7 +98,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SignUpUseCase signUpUseCase;
   final SignOutUseCase signOutUseCase;
   final GetCurrentUserUseCase getCurrentUserUseCase;
-  final AuthRepositoryImpl _authRepository;
+  final AuthRepository _authRepository;
   late StreamSubscription<Either<Failure, User?>> _authStateSubscription;
 
   AuthBloc({
@@ -106,7 +106,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     required this.signUpUseCase,
     required this.signOutUseCase,
     required this.getCurrentUserUseCase,
-  }) : _authRepository = AuthRepositoryImpl(),
+    required AuthRepository authRepository,
+  }) : _authRepository = authRepository,
        super(AuthInitial()) {
     on<AuthCheckRequested>(_onAuthCheckRequested);
     on<SignInRequested>(_onSignInRequested);

@@ -15,7 +15,6 @@ class Logger {
     StackTrace? stackTrace,
   }) {
     if (kDebugMode) {
-      final timestamp = DateTime.now().toIso8601String();
       final levelEmoji = _getLevelEmoji(level);
       final categoryName = category.name.toUpperCase();
 

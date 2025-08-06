@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/logging/logger.dart';
 import '../constants/splash_constants.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../shared/widgets/index.dart';

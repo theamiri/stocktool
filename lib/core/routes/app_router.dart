@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import '../logging/logger.dart';
+import '../di/injection_container.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/signup_page.dart';
@@ -9,11 +10,12 @@ import '../../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 
 class AppRouter {
-  static GoRouter createRouter(AuthBloc authBloc) {
+  static GoRouter createRouter() {
     return GoRouter(
       initialLocation: '/',
-      refreshListenable: _AuthChangeNotifier(authBloc),
+      refreshListenable: _AuthChangeNotifier(sl<AuthBloc>()),
       redirect: (context, state) {
+        final authBloc = sl<AuthBloc>();
         final authState = authBloc.state;
         final currentLocation = state.matchedLocation;
 
