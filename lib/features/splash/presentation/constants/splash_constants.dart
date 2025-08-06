@@ -16,4 +16,7 @@ class SplashConstants {
 
   // Spacing
   static const double subtitleBottomSpacing = 20.0;
+
+  // Timing
+  static const int splashDelaySeconds = 2;
 }
