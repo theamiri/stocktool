@@ -1,22 +1,35 @@
+import '../../../../core/error/either.dart';
+import '../../../../core/error/failures.dart';
+import '../../../../core/usecases/usecase.dart';
 import '../entities/user.dart';
 import '../repositories/auth_repository.dart';
 
-class SignUpUseCase {
+class SignUpParams {
+  final String email;
+  final String password;
+  final String firstName;
+  final String lastName;
+
+  const SignUpParams({
+    required this.email,
+    required this.password,
+    required this.firstName,
+    required this.lastName,
+  });
+}
+
+class SignUpUseCase implements UseCase<User, SignUpParams> {
   final AuthRepository repository;
 
   SignUpUseCase(this.repository);
 
-  Future<User> call(
-    String email,
-    String password,
-    String firstName,
-    String lastName,
-  ) async {
+  @override
+  Future<Either<Failure, User>> call(SignUpParams params) async {
     return await repository.createUserWithEmailAndPassword(
-      email,
-      password,
-      firstName,
-      lastName,
+      params.email,
+      params.password,
+      params.firstName,
+      params.lastName,
     );
   }
 }

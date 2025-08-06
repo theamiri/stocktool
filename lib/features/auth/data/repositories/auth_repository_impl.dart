@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import '../../../../core/error/either.dart';
+import '../../../../core/error/failures.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/auth_repository.dart';
-import '../../../../shared/utils/error_handler.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   firebase_auth.FirebaseAuth? _firebaseAuth;
@@ -18,40 +19,44 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Stream<User?> get authStateChanges {
+  Stream<Either<Failure, User?>> get authStateChanges {
     try {
-      print('🔥 Setting up Firebase auth state stream...');
       return _auth
           .authStateChanges()
           .map((firebaseUser) {
             print('📡 Firebase user changed: ${firebaseUser?.email ?? 'null'}');
             return firebaseUser != null
-                ? _mapFirebaseUserToUser(firebaseUser)
-                : null;
+                ? Right<Failure, User?>(_mapFirebaseUserToUser(firebaseUser))
+                : const Right<Failure, User?>(null);
           })
           .handleError((error) {
             print('Firebase Auth state change error: $error');
-            return null;
+            return Left<Failure, User?>(AuthFailure(error.toString()));
           });
     } catch (e) {
       print('Error getting auth state changes: $e');
-      return Stream.value(null);
+      return Stream.value(Left<Failure, User?>(AuthFailure(e.toString())));
     }
   }
 
   @override
-  User? get currentUser {
+  Future<Either<Failure, User?>> get currentUser async {
     try {
       final firebaseUser = _auth.currentUser;
-      return firebaseUser != null ? _mapFirebaseUserToUser(firebaseUser) : null;
+      return firebaseUser != null
+          ? Right<Failure, User?>(_mapFirebaseUserToUser(firebaseUser))
+          : const Right<Failure, User?>(null);
     } catch (e) {
       print('Error getting current user: $e');
-      return null;
+      return Left<Failure, User?>(AuthFailure(e.toString()));
     }
   }
 
   @override
-  Future<User> signInWithEmailAndPassword(String email, String password) async {
+  Future<Either<Failure, User>> signInWithEmailAndPassword(
+    String email,
+    String password,
+  ) async {
     try {
       final credential = await _auth.signInWithEmailAndPassword(
         email: email,
@@ -59,18 +64,19 @@ class AuthRepositoryImpl implements AuthRepository {
       );
 
       if (credential.user == null) {
-        throw Exception('Sign in failed');
+        return const Left<Failure, User>(AuthFailure('Sign in failed'));
       }
 
-      return _mapFirebaseUserToUser(credential.user!);
+      return Right<Failure, User>(_mapFirebaseUserToUser(credential.user!));
     } catch (e) {
-      ErrorHandler.logError(e, null, 'signInWithEmailAndPassword');
-      throw Exception(ErrorHandler.getDisplayError(e));
+      return Left<Failure, User>(
+        AuthFailure('Sign in failed: ${e.toString()}'),
+      );
     }
   }
 
   @override
-  Future<User> createUserWithEmailAndPassword(
+  Future<Either<Failure, User>> createUserWithEmailAndPassword(
     String email,
     String password,
     String firstName,
@@ -83,25 +89,64 @@ class AuthRepositoryImpl implements AuthRepository {
       );
 
       if (credential.user == null) {
-        throw Exception('User creation failed');
+        return const Left<Failure, User>(AuthFailure('User creation failed'));
       }
 
       // Update display name
       await credential.user!.updateDisplayName('$firstName $lastName');
 
-      return _mapFirebaseUserToUser(credential.user!);
+      return Right<Failure, User>(_mapFirebaseUserToUser(credential.user!));
     } catch (e) {
-      ErrorHandler.logError(e, null, 'createUserWithEmailAndPassword');
-      throw Exception(ErrorHandler.getDisplayError(e));
+      return Left<Failure, User>(
+        AuthFailure('User creation failed: ${e.toString()}'),
+      );
     }
   }
 
   @override
-  Future<void> signOut() async {
+  Future<Either<Failure, void>> signOut() async {
     try {
       await _auth.signOut();
+      return const Right<Failure, void>(null);
     } catch (e) {
       print('Sign out error: $e');
+      return Left<Failure, void>(AuthFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> sendPasswordResetEmail(String email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email);
+      return const Right<Failure, void>(null);
+    } catch (e) {
+      return Left<Failure, void>(
+        AuthFailure('Password reset failed: ${e.toString()}'),
+      );
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> updateUserProfile({
+    String? firstName,
+    String? lastName,
+    String? displayName,
+  }) async {
+    try {
+      final user = _auth.currentUser;
+      if (user == null) {
+        return const Left<Failure, void>(AuthFailure('No user logged in'));
+      }
+
+      if (displayName != null) {
+        await user.updateDisplayName(displayName);
+      }
+
+      return const Right<Failure, void>(null);
+    } catch (e) {
+      return Left<Failure, void>(
+        AuthFailure('Profile update failed: ${e.toString()}'),
+      );
     }
   }
 
@@ -121,6 +166,8 @@ class AuthRepositoryImpl implements AuthRepository {
       firstName: firstName,
       lastName: lastName,
       displayName: displayName,
+      createdAt: firebaseUser.metadata.creationTime,
+      lastLoginAt: firebaseUser.metadata.lastSignInTime,
     );
   }
 }

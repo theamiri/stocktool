@@ -8,17 +8,18 @@ import 'features/auth/data/repositories/auth_repository_impl.dart';
 import 'features/auth/domain/usecases/sign_in_usecase.dart';
 import 'features/auth/domain/usecases/sign_up_usecase.dart';
 import 'features/auth/domain/usecases/sign_out_usecase.dart';
+import 'features/auth/domain/usecases/get_current_user_usecase.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   try {
     await Firebase.initializeApp();
     print('Firebase initialized successfully in main');
   } catch (e) {
     print('Firebase initialization error in main: $e');
   }
-  
+
   runApp(const MyApp());
 }
 
@@ -29,18 +30,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Single repository instance for proper DI
     final authRepository = AuthRepositoryImpl();
-    
+
     final authBloc = AuthBloc(
       signInUseCase: SignInUseCase(authRepository),
       signUpUseCase: SignUpUseCase(authRepository),
       signOutUseCase: SignOutUseCase(authRepository),
-      authRepository: authRepository,
+      getCurrentUserUseCase: GetCurrentUserUseCase(authRepository),
     );
 
     return MultiBlocProvider(
-      providers: [
-        BlocProvider<AuthBloc>.value(value: authBloc),
-      ],
+      providers: [BlocProvider<AuthBloc>.value(value: authBloc)],
       child: MaterialApp.router(
         title: 'Stock Tools',
         theme: ThemeData(

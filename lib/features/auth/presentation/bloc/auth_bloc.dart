@@ -1,11 +1,15 @@
 import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import '../../../../core/error/either.dart';
+import '../../../../core/error/failures.dart';
 import '../../domain/entities/user.dart';
-import '../../domain/repositories/auth_repository.dart';
 import '../../domain/usecases/sign_in_usecase.dart';
 import '../../domain/usecases/sign_up_usecase.dart';
 import '../../domain/usecases/sign_out_usecase.dart';
+import '../../domain/usecases/get_current_user_usecase.dart';
+import '../../data/repositories/auth_repository_impl.dart';
+import '../../../../core/usecases/usecase.dart';
 
 // Events
 abstract class AuthEvent extends Equatable {
@@ -92,15 +96,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SignInUseCase signInUseCase;
   final SignUpUseCase signUpUseCase;
   final SignOutUseCase signOutUseCase;
-  final AuthRepository _authRepository;
-  late StreamSubscription<User?> _authStateSubscription;
+  final GetCurrentUserUseCase getCurrentUserUseCase;
+  final AuthRepositoryImpl _authRepository;
+  late StreamSubscription<Either<Failure, User?>> _authStateSubscription;
 
   AuthBloc({
     required this.signInUseCase,
     required this.signUpUseCase,
     required this.signOutUseCase,
-    required AuthRepository authRepository,
-  }) : _authRepository = authRepository,
+    required this.getCurrentUserUseCase,
+  }) : _authRepository = AuthRepositoryImpl(),
        super(AuthInitial()) {
     on<AuthCheckRequested>(_onAuthCheckRequested);
     on<SignInRequested>(_onSignInRequested);
@@ -108,43 +113,119 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignOutRequested>(_onSignOutRequested);
     on<AuthStateChanged>(_onAuthStateChanged);
     on<AuthErrorOccurred>(_onAuthErrorOccurred);
-    
-    // Listen to Firebase auth state changes with proper error handling
-    _authStateSubscription = _authRepository.authStateChanges.listen(
-      (user) {
-        if (!isClosed) { // Only emit if BLoC is still active
+
+    // Listen to Firebase auth state changes
+    _authStateSubscription = _authRepository.authStateChanges.listen((either) {
+      either.fold(
+        (failure) {
+          print('❌ Firebase auth error: ${failure.message}');
+          add(AuthErrorOccurred(failure.message));
+        },
+        (user) {
+          print('🔥 Firebase auth state changed: ${user?.email ?? 'null'}');
           if (user != null) {
             add(AuthStateChanged(user));
           } else {
             add(AuthStateChanged(null));
           }
-        }
-      },
-      onError: (error) {
-        if (!isClosed) { // Only emit if BLoC is still active
-          add(AuthErrorOccurred('Authentication error occurred'));
-        }
-      },
-      cancelOnError: false, // Keep listening even after errors
-    );
-    
+        },
+      );
+    });
+
     // Check initial auth state
     add(AuthCheckRequested());
   }
 
-  void _onAuthCheckRequested(
+  Future<void> _onAuthCheckRequested(
     AuthCheckRequested event,
     Emitter<AuthState> emit,
-  ) {
-    // Don't immediately emit - let the stream handle it
-    // The authStateChanges stream will emit the correct state
-    print('🔍 AuthCheckRequested - waiting for authStateChanges stream...');
+  ) async {
+    print('🔍 AuthCheckRequested - checking current user...');
+    final result = await getCurrentUserUseCase(const NoParams());
+    result.fold(
+      (failure) {
+        print('❌ Auth check failed: ${failure.message}');
+        emit(AuthError(failure.message));
+      },
+      (user) {
+        if (user != null) {
+          print('✅ User found: ${user.email}');
+          emit(Authenticated(user));
+        } else {
+          print('❌ No user found');
+          emit(Unauthenticated());
+        }
+      },
+    );
   }
 
-  void _onAuthStateChanged(
-    AuthStateChanged event,
+  Future<void> _onSignInRequested(
+    SignInRequested event,
     Emitter<AuthState> emit,
-  ) {
+  ) async {
+    emit(AuthLoading());
+    final result = await signInUseCase(
+      SignInParams(email: event.email, password: event.password),
+    );
+
+    result.fold(
+      (failure) {
+        print('❌ Sign in failed: ${failure.message}');
+        emit(AuthError(failure.message));
+      },
+      (user) {
+        print('✅ Sign in successful: ${user.email}');
+        emit(Authenticated(user));
+      },
+    );
+  }
+
+  Future<void> _onSignUpRequested(
+    SignUpRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+    final result = await signUpUseCase(
+      SignUpParams(
+        email: event.email,
+        password: event.password,
+        firstName: event.firstName,
+        lastName: event.lastName,
+      ),
+    );
+
+    result.fold(
+      (failure) {
+        print('❌ Sign up failed: ${failure.message}');
+        emit(AuthError(failure.message));
+      },
+      (user) {
+        print('✅ Sign up successful: ${user.email}');
+        emit(Authenticated(user));
+      },
+    );
+  }
+
+  Future<void> _onSignOutRequested(
+    SignOutRequested event,
+    Emitter<AuthState> emit,
+  ) async {
+    emit(AuthLoading());
+    final result = await signOutUseCase(const NoParams());
+
+    result.fold(
+      (failure) {
+        print('❌ Sign out failed: ${failure.message}');
+        emit(AuthError(failure.message));
+      },
+      (_) {
+        print('✅ Sign out successful');
+        emit(Unauthenticated());
+      },
+    );
+  }
+
+  void _onAuthStateChanged(AuthStateChanged event, Emitter<AuthState> emit) {
     if (event.user != null) {
       print('✅ Emitting Authenticated state for: ${event.user!.email}');
       emit(Authenticated(event.user!));
@@ -154,64 +235,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  void _onAuthErrorOccurred(
-    AuthErrorOccurred event,
-    Emitter<AuthState> emit,
-  ) {
+  void _onAuthErrorOccurred(AuthErrorOccurred event, Emitter<AuthState> emit) {
     emit(AuthError(event.message));
   }
 
-  Future<void> _onSignInRequested(
-    SignInRequested event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(AuthLoading());
-    try {
-      final user = await signInUseCase(event.email, event.password);
-      emit(Authenticated(user));
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
-  }
-
-  Future<void> _onSignUpRequested(
-    SignUpRequested event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(AuthLoading());
-    try {
-      final user = await signUpUseCase(
-        event.email,
-        event.password,
-        event.firstName,
-        event.lastName,
-      );
-      emit(Authenticated(user));
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
-  }
-
-  Future<void> _onSignOutRequested(
-    SignOutRequested event,
-    Emitter<AuthState> emit,
-  ) async {
-    emit(AuthLoading());
-    try {
-      await signOutUseCase();
-      emit(Unauthenticated());
-    } catch (e) {
-      emit(AuthError(e.toString()));
-    }
-  }
-
   @override
-  Future<void> close() async {
-    try {
-      await _authStateSubscription.cancel();
-    } catch (e) {
-      // Log error but don't throw to prevent close() from failing
-    }
+  Future<void> close() {
+    _authStateSubscription.cancel();
     return super.close();
   }
 }

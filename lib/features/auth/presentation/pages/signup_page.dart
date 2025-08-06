@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../shared/widgets/index.dart';
-import '../../../../shared/utils/validators.dart';
 import '../bloc/auth_bloc.dart';
 
 class SignupPage extends StatefulWidget {

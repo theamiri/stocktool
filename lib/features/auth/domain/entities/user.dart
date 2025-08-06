@@ -6,6 +6,8 @@ class User extends Equatable {
   final String? firstName;
   final String? lastName;
   final String? displayName;
+  final DateTime? createdAt;
+  final DateTime? lastLoginAt;
 
   const User({
     required this.id,
@@ -13,6 +15,8 @@ class User extends Equatable {
     this.firstName,
     this.lastName,
     this.displayName,
+    this.createdAt,
+    this.lastLoginAt,
   });
 
   String get fullName {
@@ -22,8 +26,18 @@ class User extends Equatable {
     return displayName ?? email;
   }
 
+  bool get hasProfile => firstName != null && lastName != null;
+
   @override
-  List<Object?> get props => [id, email, firstName, lastName, displayName];
+  List<Object?> get props => [
+    id,
+    email,
+    firstName,
+    lastName,
+    displayName,
+    createdAt,
+    lastLoginAt,
+  ];
 
   User copyWith({
     String? id,
@@ -31,6 +45,8 @@ class User extends Equatable {
     String? firstName,
     String? lastName,
     String? displayName,
+    DateTime? createdAt,
+    DateTime? lastLoginAt,
   }) {
     return User(
       id: id ?? this.id,
@@ -38,6 +54,8 @@ class User extends Equatable {
       firstName: firstName ?? this.firstName,
       lastName: lastName ?? this.lastName,
       displayName: displayName ?? this.displayName,
+      createdAt: createdAt ?? this.createdAt,
+      lastLoginAt: lastLoginAt ?? this.lastLoginAt,
     );
   }
 }
