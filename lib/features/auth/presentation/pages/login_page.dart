@@ -156,7 +156,8 @@ class _LoginPageState extends State<LoginPage> {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          // TODO: Handle login
+                          // TODO: Handle login validation
+                          context.go('/dashboard');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AuthConstants.primaryGold,

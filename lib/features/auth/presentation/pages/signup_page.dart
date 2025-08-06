@@ -218,7 +218,8 @@ class _SignupPageState extends State<SignupPage> {
                       height: 50,
                       child: ElevatedButton(
                         onPressed: () {
-                          // TODO: Handle signup
+                          // TODO: Handle signup validation
+                          context.go('/dashboard');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AuthConstants.primaryGold,
