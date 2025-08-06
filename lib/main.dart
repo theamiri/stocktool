@@ -27,10 +27,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Single repository instance for proper DI
+    final authRepository = AuthRepositoryImpl();
+    
     final authBloc = AuthBloc(
-      signInUseCase: SignInUseCase(AuthRepositoryImpl()),
-      signUpUseCase: SignUpUseCase(AuthRepositoryImpl()),
-      signOutUseCase: SignOutUseCase(AuthRepositoryImpl()),
+      signInUseCase: SignInUseCase(authRepository),
+      signUpUseCase: SignUpUseCase(authRepository),
+      signOutUseCase: SignOutUseCase(authRepository),
+      authRepository: authRepository,
     );
 
     return MultiBlocProvider(

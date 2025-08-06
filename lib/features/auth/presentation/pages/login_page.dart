@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../shared/widgets/index.dart';
+import '../../../../shared/utils/validators.dart';
 import '../bloc/auth_bloc.dart';
 
 class LoginPage extends StatefulWidget {
@@ -13,6 +14,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _isPasswordVisible = false;
@@ -45,150 +47,154 @@ class _LoginPageState extends State<LoginPage> {
               // Form section
               Expanded(
                 flex: 3,
-                child: Column(
-                  children: [
-                    // Email field
-                    CustomTextField(
-                      controller: _emailController,
-                      focusNode: _emailFocusNode,
-                      hintText: 'Email',
-                      prefixIcon: Icons.email,
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Password field
-                    CustomTextField(
-                      controller: _passwordController,
-                      focusNode: _passwordFocusNode,
-                      hintText: 'Password',
-                      prefixIcon: Icons.lock,
-                      obscureText: !_isPasswordVisible,
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _isPasswordVisible
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: Colors.grey,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _isPasswordVisible = !_isPasswordVisible;
-                          });
-                        },
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: [
+                      // Email field
+                      CustomTextField(
+                        controller: _emailController,
+                        focusNode: _emailFocusNode,
+                        hintText: 'Email',
+                        prefixIcon: Icons.email,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: Validators.validateEmail,
                       ),
-                    ),
-                    const SizedBox(height: 8),
+                      const SizedBox(height: 16),
 
-                    // Forgot password link
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {
-                          // TODO: Navigate to forgot password
+                      // Password field
+                      CustomTextField(
+                        controller: _passwordController,
+                        focusNode: _passwordFocusNode,
+                        hintText: 'Password',
+                        prefixIcon: Icons.lock,
+                        obscureText: !_isPasswordVisible,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Password is required';
+                          }
+                          return null;
                         },
-                        child: Text(
-                          'Forgot Password?',
-                          style: AppTheme.hintTextStyle,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isPasswordVisible
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Colors.grey,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
                         ),
                       ),
-                    ),
-                    const SizedBox(height: 24),
+                      const SizedBox(height: 8),
 
-                    // Login button
-                    BlocConsumer<AuthBloc, AuthState>(
-                      listener: (context, state) {
-                        if (state is Authenticated) {
-                          context.go('/dashboard');
-                        }
-                      },
-                      builder: (context, state) {
-                        return PrimaryButton(
-                          text: state is AuthLoading
-                              ? 'Logging in...'
-                              : 'Login',
-                          onPressed: state is AuthLoading
-                              ? null
-                              : () {
-                                  final email = _emailController.text.trim();
-                                  final password = _passwordController.text
-                                      .trim();
-
-                                  if (email.isEmpty || password.isEmpty) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
-                                        content: Text(
-                                          'Please fill in all fields',
-                                        ),
-                                        backgroundColor: Colors.red,
-                                      ),
-                                    );
-                                    return;
-                                  }
-
-                                  context.read<AuthBloc>().add(
-                                    SignInRequested(email, password),
-                                  );
-                                },
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 32),
-
-                    // OR separator
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            height: 1,
-                            color: AppTheme.borderColor,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppTheme.paddingMedium,
-                          ),
+                      // Forgot password link
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {
+                            // TODO: Navigate to forgot password
+                          },
                           child: Text(
-                            'OR',
-                            style: AppTheme.hintTextStyle.copyWith(
-                              fontWeight: FontWeight.w500,
+                            'Forgot Password?',
+                            style: AppTheme.hintTextStyle,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+
+                      // Login button
+                      BlocConsumer<AuthBloc, AuthState>(
+                        listener: (context, state) {
+                          if (state is Authenticated) {
+                            context.go('/dashboard');
+                          }
+                        },
+                        builder: (context, state) {
+                          return PrimaryButton(
+                            text: state is AuthLoading
+                                ? 'Logging in...'
+                                : 'Login',
+                            onPressed: state is AuthLoading
+                                ? null
+                                : () {
+                                    if (_formKey.currentState!.validate()) {
+                                      // Sanitize inputs
+                                      final email = Validators.sanitizeInput(
+                                        _emailController.text.trim(),
+                                      );
+                                      final password = _passwordController.text
+                                          .trim(); // Don't sanitize passwords
+
+                                      context.read<AuthBloc>().add(
+                                        SignInRequested(email, password),
+                                      );
+                                    }
+                                  },
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 32),
+
+                      // OR separator
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: 1,
+                              color: AppTheme.borderColor,
                             ),
                           ),
-                        ),
-                        Expanded(
-                          child: Container(
-                            height: 1,
-                            color: AppTheme.borderColor,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: AppTheme.paddingMedium,
+                            ),
+                            child: Text(
+                              'OR',
+                              style: AppTheme.hintTextStyle.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 24),
+                          Expanded(
+                            child: Container(
+                              height: 1,
+                              color: AppTheme.borderColor,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
 
-                    // Social login buttons
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SocialLoginButton(
-                          icon: 'assets/svgs/facebook_icon.svg',
-                          onPressed: () {
-                            // TODO: Handle Facebook login
-                          },
-                        ),
-                        SocialLoginButton(
-                          icon: 'assets/svgs/google_icon.svg',
-                          onPressed: () {
-                            // TODO: Handle Google login
-                          },
-                        ),
-                        SocialLoginButton(
-                          icon: 'assets/svgs/microsoft_icon.svg',
-                          onPressed: () {
-                            // TODO: Handle Microsoft login
-                          },
-                        ),
-                      ],
-                    ),
-                  ],
+                      // Social login buttons
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          SocialLoginButton(
+                            icon: 'assets/svgs/facebook_icon.svg',
+                            onPressed: () {
+                              // TODO: Handle Facebook login
+                            },
+                          ),
+                          SocialLoginButton(
+                            icon: 'assets/svgs/google_icon.svg',
+                            onPressed: () {
+                              // TODO: Handle Google login
+                            },
+                          ),
+                          SocialLoginButton(
+                            icon: 'assets/svgs/microsoft_icon.svg',
+                            onPressed: () {
+                              // TODO: Handle Microsoft login
+                            },
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
 

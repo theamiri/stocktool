@@ -2,10 +2,10 @@ import 'dart:async';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../domain/entities/user.dart';
+import '../../domain/repositories/auth_repository.dart';
 import '../../domain/usecases/sign_in_usecase.dart';
 import '../../domain/usecases/sign_up_usecase.dart';
 import '../../domain/usecases/sign_out_usecase.dart';
-import '../../data/repositories/auth_repository_impl.dart';
 
 // Events
 abstract class AuthEvent extends Equatable {
@@ -92,14 +92,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final SignInUseCase signInUseCase;
   final SignUpUseCase signUpUseCase;
   final SignOutUseCase signOutUseCase;
-  final AuthRepositoryImpl _authRepository;
+  final AuthRepository _authRepository;
   late StreamSubscription<User?> _authStateSubscription;
 
   AuthBloc({
     required this.signInUseCase,
     required this.signUpUseCase,
     required this.signOutUseCase,
-  }) : _authRepository = AuthRepositoryImpl(),
+    required AuthRepository authRepository,
+  }) : _authRepository = authRepository,
        super(AuthInitial()) {
     on<AuthCheckRequested>(_onAuthCheckRequested);
     on<SignInRequested>(_onSignInRequested);
@@ -108,20 +109,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthStateChanged>(_onAuthStateChanged);
     on<AuthErrorOccurred>(_onAuthErrorOccurred);
     
-    // Listen to Firebase auth state changes
+    // Listen to Firebase auth state changes with proper error handling
     _authStateSubscription = _authRepository.authStateChanges.listen(
       (user) {
-        print('🔥 Firebase auth state changed: ${user?.email ?? 'null'}');
-        if (user != null) {
-          add(AuthStateChanged(user));
-        } else {
-          add(AuthStateChanged(null));
+        if (!isClosed) { // Only emit if BLoC is still active
+          if (user != null) {
+            add(AuthStateChanged(user));
+          } else {
+            add(AuthStateChanged(null));
+          }
         }
       },
       onError: (error) {
-        print('❌ Firebase auth error: $error');
-        add(AuthErrorOccurred('Authentication error: $error'));
+        if (!isClosed) { // Only emit if BLoC is still active
+          add(AuthErrorOccurred('Authentication error occurred'));
+        }
       },
+      cancelOnError: false, // Keep listening even after errors
     );
     
     // Check initial auth state
@@ -202,8 +206,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   @override
-  Future<void> close() {
-    _authStateSubscription.cancel();
+  Future<void> close() async {
+    try {
+      await _authStateSubscription.cancel();
+    } catch (e) {
+      // Log error but don't throw to prevent close() from failing
+    }
     return super.close();
   }
 }

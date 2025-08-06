@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/auth_repository.dart';
+import '../../../../shared/utils/error_handler.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   firebase_auth.FirebaseAuth? _firebaseAuth;
@@ -63,7 +64,8 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return _mapFirebaseUserToUser(credential.user!);
     } catch (e) {
-      throw Exception('Sign in failed: ${e.toString()}');
+      ErrorHandler.logError(e, null, 'signInWithEmailAndPassword');
+      throw Exception(ErrorHandler.getDisplayError(e));
     }
   }
 
@@ -89,7 +91,8 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return _mapFirebaseUserToUser(credential.user!);
     } catch (e) {
-      throw Exception('User creation failed: ${e.toString()}');
+      ErrorHandler.logError(e, null, 'createUserWithEmailAndPassword');
+      throw Exception(ErrorHandler.getDisplayError(e));
     }
   }
 

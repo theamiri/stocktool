@@ -46,7 +46,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         controller: widget.controller,
         focusNode: widget.focusNode,
         onTap: widget.onTap ?? () => setState(() {}),
-        onChanged: widget.onChanged ?? (value) => setState(() {}),
+        onChanged: widget.onChanged,
         obscureText: widget.obscureText,
         keyboardType: widget.keyboardType,
         decoration: AppTheme.inputDecoration(

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -16,15 +17,17 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   bool _isFirebaseInitialized = false;
+  bool _hasNavigated = false; // Prevent navigation race condition
   String? _error;
+  Timer? _timeoutTimer;
 
   @override
   void initState() {
     super.initState();
-    _initializeFirebaseAndNavigate();
+    _initializeAppAndWaitForAuth();
   }
 
-  Future<void> _initializeFirebaseAndNavigate() async {
+  Future<void> _initializeAppAndWaitForAuth() async {
     try {
       // Wait for platform to be ready
       await Future.delayed(const Duration(milliseconds: 500));
@@ -33,45 +36,64 @@ class _SplashPageState extends State<SplashPage> {
         _isFirebaseInitialized = true;
       });
 
-      // Give Firebase auth time to resolve, then check BLoC state
-      await Future.delayed(const Duration(seconds: 2));
-
-      if (mounted) {
-        final authBloc = context.read<AuthBloc>();
-        final authState = authBloc.state;
-        
-        print('🚀 Splash timeout - Auth state: ${authState.runtimeType}');
-        
-        // If still AuthInitial after timeout, force navigation to login
-        if (authState is AuthInitial) {
-          print('⚠️ Auth state still initial, navigating to login');
-          context.go('/login');
-        } else if (authState is Authenticated) {
-          print('✅ User authenticated, navigating to dashboard');
-          context.go('/dashboard');
-        } else if (authState is Unauthenticated) {
-          print('❌ User not authenticated, navigating to login');
-          context.go('/login');
-        }
-      }
+      // Set a maximum wait time for auth state resolution
+      _setupAuthTimeoutFallback();
     } catch (e) {
-      print('Splash initialization error: $e');
       setState(() {
         _error = e.toString();
       });
+    }
+  }
 
-      // Navigate to login on error
-      if (mounted) {
-        context.go('/login');
+  void _setupAuthTimeoutFallback() {
+    // Fallback navigation after timeout if no auth state change occurs
+    _timeoutTimer = Timer(const Duration(seconds: 3), () {
+      if (mounted && !_hasNavigated) {
+        final authBloc = context.read<AuthBloc>();
+        final authState = authBloc.state;
+        
+        // Only navigate if still in initial state (auth stream didn't fire)
+        if (authState is AuthInitial) {
+          _navigateToLogin();
+        }
       }
+    });
+  }
+
+  @override
+  void dispose() {
+    _timeoutTimer?.cancel();
+    super.dispose();
+  }
+
+  void _navigateToLogin() {
+    if (mounted && !_hasNavigated) {
+      _hasNavigated = true;
+      context.go('/login');
+    }
+  }
+
+  void _navigateToDashboard() {
+    if (mounted && !_hasNavigated) {
+      _hasNavigated = true;
+      context.go('/dashboard');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.backgroundColor,
-      body: Stack(
+    return BlocListener<AuthBloc, AuthState>(
+      listener: (context, state) {
+        // Handle auth state changes to prevent race conditions
+        if (state is Authenticated) {
+          _navigateToDashboard();
+        } else if (state is Unauthenticated) {
+          _navigateToLogin();
+        }
+      },
+      child: Scaffold(
+        backgroundColor: AppTheme.backgroundColor,
+        body: Stack(
         children: [
           Positioned(
             bottom: 0,
@@ -141,6 +163,7 @@ class _SplashPageState extends State<SplashPage> {
           ),
         ],
       ),
+    ),
     );
   }
 }
