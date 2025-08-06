@@ -111,6 +111,15 @@ class _LoginPageState extends State<LoginPage> {
                         listener: (context, state) {
                           if (state is Authenticated) {
                             context.go('/dashboard');
+                          } else if (state is AuthError) {
+                            // Show error message
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(state.message),
+                                backgroundColor: Colors.red,
+                                duration: const Duration(seconds: 2),
+                              ),
+                            );
                           }
                         },
                         builder: (context, state) {

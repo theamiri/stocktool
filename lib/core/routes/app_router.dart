@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import '../logging/logger.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/signup_page.dart';
@@ -16,8 +17,8 @@ class AppRouter {
         final authState = authBloc.state;
         final currentLocation = state.matchedLocation;
 
-        print(
-          '🔄 Router redirect - State: ${authState.runtimeType}, Location: $currentLocation',
+        Logger.navigation(
+          'Router redirect - State: ${authState.runtimeType}, Location: $currentLocation',
         );
 
         // Simple logic:
@@ -29,12 +30,12 @@ class AppRouter {
           if (currentLocation == '/' ||
               currentLocation == '/login' ||
               currentLocation == '/signup') {
-            print('✅ Authenticated user → redirecting to dashboard');
+            Logger.navigation('Authenticated user → redirecting to dashboard');
             return '/dashboard';
           }
         } else if (authState is Unauthenticated) {
           if (currentLocation == '/' || currentLocation == '/dashboard') {
-            print('❌ Unauthenticated user → redirecting to login');
+            Logger.navigation('Unauthenticated user → redirecting to login');
             return '/login';
           }
         }

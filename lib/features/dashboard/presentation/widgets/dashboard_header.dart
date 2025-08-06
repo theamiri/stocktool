@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../constants/dashboard_constants.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../core/logging/logger.dart';
 import '../../../auth/presentation/bloc/auth_bloc.dart';
 
 class DashboardHeader extends StatelessWidget {
@@ -38,15 +39,29 @@ class DashboardHeader extends StatelessWidget {
                 ),
                 const Spacer(),
                 // Logout button
-                IconButton(
-                  onPressed: () {
-                    context.read<AuthBloc>().add(SignOutRequested());
-                    // No need for manual navigation - GoRouter will handle it automatically
+                BlocListener<AuthBloc, AuthState>(
+                  listener: (context, state) {
+                    if (state is AuthError) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(state.message),
+                          backgroundColor: Colors.red,
+                          duration: const Duration(seconds: 2),
+                        ),
+                      );
+                    }
                   },
-                  icon: Icon(
-                    Icons.logout,
-                    color: AppTheme.headerTextColor,
-                    size: 24,
+                  child: IconButton(
+                    onPressed: () {
+                      Logger.auth('User initiated logout from dashboard');
+                      context.read<AuthBloc>().add(SignOutRequested());
+                      // No need for manual navigation - GoRouter will handle it automatically
+                    },
+                    icon: Icon(
+                      Icons.logout,
+                      color: AppTheme.headerTextColor,
+                      size: 24,
+                    ),
                   ),
                 ),
               ],

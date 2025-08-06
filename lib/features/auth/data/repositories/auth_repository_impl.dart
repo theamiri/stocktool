@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 import '../../../../core/error/either.dart';
 import '../../../../core/error/failures.dart';
+import '../../../../core/logging/logger.dart';
+import '../../../../shared/utils/error_handler.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/repositories/auth_repository.dart';
 
@@ -24,17 +26,19 @@ class AuthRepositoryImpl implements AuthRepository {
       return _auth
           .authStateChanges()
           .map((firebaseUser) {
-            print('📡 Firebase user changed: ${firebaseUser?.email ?? 'null'}');
+            Logger.auth(
+              'Firebase user changed: ${firebaseUser?.email ?? 'null'}',
+            );
             return firebaseUser != null
                 ? Right<Failure, User?>(_mapFirebaseUserToUser(firebaseUser))
                 : const Right<Failure, User?>(null);
           })
           .handleError((error) {
-            print('Firebase Auth state change error: $error');
+            Logger.authError('Firebase Auth state change error', error: error);
             return Left<Failure, User?>(AuthFailure(error.toString()));
           });
     } catch (e) {
-      print('Error getting auth state changes: $e');
+      Logger.authError('Error getting auth state changes', error: e);
       return Stream.value(Left<Failure, User?>(AuthFailure(e.toString())));
     }
   }
@@ -47,7 +51,7 @@ class AuthRepositoryImpl implements AuthRepository {
           ? Right<Failure, User?>(_mapFirebaseUserToUser(firebaseUser))
           : const Right<Failure, User?>(null);
     } catch (e) {
-      print('Error getting current user: $e');
+      Logger.authError('Error getting current user', error: e);
       return Left<Failure, User?>(AuthFailure(e.toString()));
     }
   }
@@ -69,9 +73,8 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return Right<Failure, User>(_mapFirebaseUserToUser(credential.user!));
     } catch (e) {
-      return Left<Failure, User>(
-        AuthFailure('Sign in failed: ${e.toString()}'),
-      );
+      Logger.authError('Sign in failed', error: e);
+      return Left<Failure, User>(AuthFailure(ErrorHandler.getDisplayError(e)));
     }
   }
 
@@ -97,9 +100,8 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return Right<Failure, User>(_mapFirebaseUserToUser(credential.user!));
     } catch (e) {
-      return Left<Failure, User>(
-        AuthFailure('User creation failed: ${e.toString()}'),
-      );
+      Logger.authError('User creation failed', error: e);
+      return Left<Failure, User>(AuthFailure(ErrorHandler.getDisplayError(e)));
     }
   }
 
@@ -109,8 +111,8 @@ class AuthRepositoryImpl implements AuthRepository {
       await _auth.signOut();
       return const Right<Failure, void>(null);
     } catch (e) {
-      print('Sign out error: $e');
-      return Left<Failure, void>(AuthFailure(e.toString()));
+      Logger.authError('Sign out error', error: e);
+      return Left<Failure, void>(AuthFailure(ErrorHandler.getDisplayError(e)));
     }
   }
 

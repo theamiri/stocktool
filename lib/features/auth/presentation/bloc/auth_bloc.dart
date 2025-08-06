@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
 import '../../../../core/error/either.dart';
 import '../../../../core/error/failures.dart';
+import '../../../../core/logging/logger.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/usecases/sign_in_usecase.dart';
 import '../../domain/usecases/sign_up_usecase.dart';
@@ -118,11 +119,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     _authStateSubscription = _authRepository.authStateChanges.listen((either) {
       either.fold(
         (failure) {
-          print('❌ Firebase auth error: ${failure.message}');
+          Logger.authError('Firebase auth error: ${failure.message}');
           add(AuthErrorOccurred(failure.message));
         },
         (user) {
-          print('🔥 Firebase auth state changed: ${user?.email ?? 'null'}');
+          Logger.auth('Firebase auth state changed: ${user?.email ?? 'null'}');
           if (user != null) {
             add(AuthStateChanged(user));
           } else {
@@ -140,19 +141,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     AuthCheckRequested event,
     Emitter<AuthState> emit,
   ) async {
-    print('🔍 AuthCheckRequested - checking current user...');
+    Logger.auth('AuthCheckRequested - checking current user...');
     final result = await getCurrentUserUseCase(const NoParams());
     result.fold(
       (failure) {
-        print('❌ Auth check failed: ${failure.message}');
+        Logger.authError('Auth check failed: ${failure.message}');
         emit(AuthError(failure.message));
       },
       (user) {
         if (user != null) {
-          print('✅ User found: ${user.email}');
+          Logger.auth('User found: ${user.email}');
           emit(Authenticated(user));
         } else {
-          print('❌ No user found');
+          Logger.auth('No user found');
           emit(Unauthenticated());
         }
       },
@@ -170,11 +171,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     result.fold(
       (failure) {
-        print('❌ Sign in failed: ${failure.message}');
+        Logger.authError('Sign in failed: ${failure.message}');
         emit(AuthError(failure.message));
       },
       (user) {
-        print('✅ Sign in successful: ${user.email}');
+        Logger.auth('Sign in successful: ${user.email}');
         emit(Authenticated(user));
       },
     );
@@ -196,11 +197,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     result.fold(
       (failure) {
-        print('❌ Sign up failed: ${failure.message}');
+        Logger.authError('Sign up failed: ${failure.message}');
         emit(AuthError(failure.message));
       },
       (user) {
-        print('✅ Sign up successful: ${user.email}');
+        Logger.auth('Sign up successful: ${user.email}');
         emit(Authenticated(user));
       },
     );
@@ -215,11 +216,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     result.fold(
       (failure) {
-        print('❌ Sign out failed: ${failure.message}');
+        Logger.authError('Sign out failed: ${failure.message}');
         emit(AuthError(failure.message));
       },
       (_) {
-        print('✅ Sign out successful');
+        Logger.auth('Sign out successful');
         emit(Unauthenticated());
       },
     );
@@ -227,10 +228,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _onAuthStateChanged(AuthStateChanged event, Emitter<AuthState> emit) {
     if (event.user != null) {
-      print('✅ Emitting Authenticated state for: ${event.user!.email}');
+      Logger.auth('Emitting Authenticated state for: ${event.user!.email}');
       emit(Authenticated(event.user!));
     } else {
-      print('❌ Emitting Unauthenticated state');
+      Logger.auth('Emitting Unauthenticated state');
       emit(Unauthenticated());
     }
   }

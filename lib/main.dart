@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'core/routes/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'core/logging/logger.dart';
 import 'features/auth/presentation/bloc/auth_bloc.dart';
 import 'features/auth/data/repositories/auth_repository_impl.dart';
 import 'features/auth/domain/usecases/sign_in_usecase.dart';
@@ -15,9 +16,9 @@ void main() async {
 
   try {
     await Firebase.initializeApp();
-    print('Firebase initialized successfully in main');
+    Logger.firebase('Firebase initialized successfully in main');
   } catch (e) {
-    print('Firebase initialization error in main: $e');
+    Logger.firebaseError('Firebase initialization error in main', error: e);
   }
 
   runApp(const MyApp());
