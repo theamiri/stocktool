@@ -3,6 +3,7 @@ import '../constants/dashboard_constants.dart';
 import '../widgets/dashboard_header.dart';
 import '../widgets/dashboard_footer.dart';
 import '../widgets/dashboard_card.dart';
+import '../../../../core/theme/app_theme.dart';
 
 class DashboardView2Page extends StatelessWidget {
   const DashboardView2Page({super.key});
@@ -10,7 +11,7 @@ class DashboardView2Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: DashboardConstants.backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -28,8 +29,10 @@ class DashboardView2Page extends StatelessWidget {
                       width: double.infinity,
                       height: DashboardConstants.buttonHeight,
                       decoration: BoxDecoration(
-                        color: DashboardConstants.primaryGold,
-                        borderRadius: BorderRadius.circular(12),
+                        color: AppTheme.primaryGold,
+                        borderRadius: BorderRadius.circular(
+                          AppTheme.inputBorderRadius,
+                        ),
                       ),
                       child: Material(
                         color: Colors.transparent,
@@ -42,7 +45,7 @@ class DashboardView2Page extends StatelessWidget {
                             child: Text(
                               'SETUP',
                               style: TextStyle(
-                                color: DashboardConstants.headerTextColor,
+                                color: AppTheme.headerTextColor,
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                               ),

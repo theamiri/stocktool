@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import '../../../../core/theme/app_theme.dart';
 
 class SplashConstants {
   // Colors
-  static const Color primaryGold = Color(0xFFE6A72C);
-  static const Color lightGold = Color(0xFFF7D794);
-  static const Color backgroundColor = Colors.white;
-  static const Color textColor = Colors.black;
+  static const Color primaryGold = AppTheme.primaryGold;
+  static const Color lightGold = AppTheme.lightGold;
+  static const Color backgroundColor = AppTheme.backgroundColor;
+  static const Color textColor = AppTheme.textColor;
 
   // Text
   static const String locationText = 'AUSTRALIA';

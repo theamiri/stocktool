@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants/dashboard_constants.dart';
+import '../../../../core/theme/app_theme.dart';
 
 class DashboardCard extends StatelessWidget {
   final IconData icon;
@@ -16,18 +17,7 @@ class DashboardCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        color: DashboardConstants.cardBackgroundColor,
-        borderRadius: BorderRadius.circular(12),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.1),
-            spreadRadius: 1,
-            blurRadius: 4,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+      decoration: AppTheme.cardDecoration,
       child: Material(
         color: Colors.transparent,
         child: InkWell(
@@ -46,11 +36,7 @@ class DashboardCard extends StatelessWidget {
                 Text(
                   title,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: DashboardConstants.cardTextColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
+                  style: AppTheme.cardTitleStyle,
                 ),
               ],
             ),

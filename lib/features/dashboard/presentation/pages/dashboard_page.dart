@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../constants/dashboard_constants.dart';
 import 'dashboard_view1_page.dart';
 import 'dashboard_view2_page.dart';
+import '../../../../core/theme/app_theme.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -22,7 +22,7 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: DashboardConstants.backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       body: Stack(
         children: [
           // Main dashboard view
@@ -34,16 +34,9 @@ class _DashboardPageState extends State<DashboardPage> {
             right: 20,
             child: Container(
               decoration: BoxDecoration(
-                color: DashboardConstants.primaryGold,
+                color: AppTheme.primaryGold,
                 borderRadius: BorderRadius.circular(25),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.1),
-                    spreadRadius: 1,
-                    blurRadius: 4,
-                    offset: const Offset(0, 2),
-                  ),
-                ],
+                boxShadow: AppTheme.buttonShadow,
               ),
               child: Material(
                 color: Colors.transparent,
@@ -60,16 +53,14 @@ class _DashboardPageState extends State<DashboardPage> {
                       children: [
                         Icon(
                           _isView1 ? Icons.grid_view : Icons.list,
-                          color: DashboardConstants.headerTextColor,
+                          color: AppTheme.headerTextColor,
                           size: 20,
                         ),
                         const SizedBox(width: 8),
                         Text(
                           _isView1 ? 'Grid' : 'List',
-                          style: const TextStyle(
-                            color: DashboardConstants.headerTextColor,
+                          style: AppTheme.buttonTextStyle.copyWith(
                             fontSize: 14,
-                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],

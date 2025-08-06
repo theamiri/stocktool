@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import '../constants/dashboard_constants.dart';
 import '../widgets/dashboard_button.dart';
 import '../widgets/dashboard_header.dart';
 import '../widgets/dashboard_footer.dart';
+import '../../../../core/theme/app_theme.dart';
 
 class DashboardView1Page extends StatelessWidget {
   const DashboardView1Page({super.key});
@@ -10,7 +10,7 @@ class DashboardView1Page extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: DashboardConstants.backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
         child: Column(
           children: [

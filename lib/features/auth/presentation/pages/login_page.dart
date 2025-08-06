@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../constants/auth_constants.dart';
 import '../widgets/social_login_button.dart';
+import '../../../../core/theme/app_theme.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AuthConstants.backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -52,33 +52,22 @@ class _LoginPageState extends State<LoginPage> {
                   children: [
                     // Email field
                     Container(
-                      decoration: BoxDecoration(
-                        color:
+                      decoration: AppTheme.inputContainerDecoration(
+                        isFocused: _emailFocusNode.hasFocus,
+                        backgroundColor:
                             _emailController.text.isEmpty &&
                                 !_emailFocusNode.hasFocus
-                            ? Colors.grey[100]
-                            : Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: _emailFocusNode.hasFocus
-                              ? AuthConstants.primaryGold
-                              : Colors.grey[300]!,
-                          width: 1,
-                        ),
+                            ? AppTheme.inactiveFieldColor
+                            : AppTheme.cardBackgroundColor,
                       ),
                       child: TextField(
                         controller: _emailController,
                         focusNode: _emailFocusNode,
                         onTap: () => setState(() {}),
                         onChanged: (value) => setState(() {}),
-                        decoration: const InputDecoration(
+                        decoration: AppTheme.inputDecoration(
                           hintText: 'Email',
-                          prefixIcon: Icon(Icons.email, color: Colors.grey),
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 16,
-                          ),
+                          prefixIcon: Icons.email,
                         ),
                       ),
                     ),
@@ -86,19 +75,13 @@ class _LoginPageState extends State<LoginPage> {
 
                     // Password field
                     Container(
-                      decoration: BoxDecoration(
-                        color:
+                      decoration: AppTheme.inputContainerDecoration(
+                        isFocused: _passwordFocusNode.hasFocus,
+                        backgroundColor:
                             _passwordController.text.isEmpty &&
                                 !_passwordFocusNode.hasFocus
-                            ? Colors.grey[100]
-                            : Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: _passwordFocusNode.hasFocus
-                              ? AuthConstants.primaryGold
-                              : Colors.grey[300]!,
-                          width: 1,
-                        ),
+                            ? AppTheme.inactiveFieldColor
+                            : AppTheme.cardBackgroundColor,
                       ),
                       child: TextField(
                         controller: _passwordController,
@@ -106,12 +89,9 @@ class _LoginPageState extends State<LoginPage> {
                         onTap: () => setState(() {}),
                         onChanged: (value) => setState(() {}),
                         obscureText: !_isPasswordVisible,
-                        decoration: InputDecoration(
+                        decoration: AppTheme.inputDecoration(
                           hintText: 'Password',
-                          prefixIcon: const Icon(
-                            Icons.lock,
-                            color: Colors.grey,
-                          ),
+                          prefixIcon: Icons.lock,
                           suffixIcon: IconButton(
                             icon: Icon(
                               _isPasswordVisible
@@ -125,11 +105,6 @@ class _LoginPageState extends State<LoginPage> {
                               });
                             },
                           ),
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 16,
-                          ),
                         ),
                       ),
                     ),
@@ -142,9 +117,9 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () {
                           // TODO: Navigate to forgot password
                         },
-                        child: const Text(
+                        child: Text(
                           'Forgot Password?',
-                          style: TextStyle(color: Colors.grey, fontSize: 14),
+                          style: AppTheme.hintTextStyle,
                         ),
                       ),
                     ),
@@ -159,20 +134,8 @@ class _LoginPageState extends State<LoginPage> {
                           // TODO: Handle login validation
                           context.go('/dashboard');
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AuthConstants.primaryGold,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: const Text(
-                          'Login',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        style: AppTheme.primaryButtonStyle,
+                        child: Text('Login', style: AppTheme.buttonTextStyle),
                       ),
                     ),
                     const SizedBox(height: 32),
@@ -181,21 +144,27 @@ class _LoginPageState extends State<LoginPage> {
                     Row(
                       children: [
                         Expanded(
-                          child: Container(height: 1, color: Colors.grey[300]),
+                          child: Container(
+                            height: 1,
+                            color: AppTheme.borderColor,
+                          ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: AppTheme.paddingMedium,
+                          ),
                           child: Text(
                             'OR',
-                            style: TextStyle(
-                              color: Colors.grey[600],
-                              fontSize: 14,
+                            style: AppTheme.hintTextStyle.copyWith(
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
                         Expanded(
-                          child: Container(height: 1, color: Colors.grey[300]),
+                          child: Container(
+                            height: 1,
+                            color: AppTheme.borderColor,
+                          ),
                         ),
                       ],
                     ),
@@ -235,21 +204,14 @@ class _LoginPageState extends State<LoginPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
-                      "Don't have account? ",
-                      style: TextStyle(color: Colors.grey, fontSize: 14),
-                    ),
+                    Text("Don't have account? ", style: AppTheme.hintTextStyle),
                     GestureDetector(
                       onTap: () {
                         context.go('/signup');
                       },
-                      child: const Text(
+                      child: Text(
                         'Register Now',
-                        style: TextStyle(
-                          color: AuthConstants.primaryGold,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: AppTheme.linkTextStyle,
                       ),
                     ),
                   ],

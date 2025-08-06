@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import '../../../../core/theme/app_theme.dart';
 
 class AuthConstants {
   // Colors
-  static const Color primaryGold = Color(0xFFE6A72C);
-  static const Color backgroundColor = Colors.white;
-  static const Color textColor = Colors.black;
+  static const Color primaryGold = AppTheme.primaryGold;
+  static const Color backgroundColor = AppTheme.backgroundColor;
+  static const Color textColor = AppTheme.textColor;
 
   // Text
   static const String appTitle = 'STOCK TOOLS';
@@ -12,13 +13,13 @@ class AuthConstants {
 
   // Dimensions
   static const double logoSize = 120.0; // Same as splash screen
-  static const double buttonHeight = 50.0;
-  static const double inputBorderRadius = 12.0;
+  static const double buttonHeight = AppTheme.buttonHeight;
+  static const double inputBorderRadius = AppTheme.inputBorderRadius;
 
   // Spacing
-  static const double logoBottomSpacing = 24.0;
-  static const double titleBottomSpacing = 8.0;
-  static const double fieldSpacing = 16.0;
-  static const double buttonTopSpacing = 24.0;
-  static const double separatorSpacing = 32.0;
+  static const double logoBottomSpacing = AppTheme.paddingExtraLarge;
+  static const double titleBottomSpacing = AppTheme.paddingSmall;
+  static const double fieldSpacing = AppTheme.paddingMedium;
+  static const double buttonTopSpacing = AppTheme.paddingExtraLarge;
+  static const double separatorSpacing = AppTheme.paddingHuge;
 }

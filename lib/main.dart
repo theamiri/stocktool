@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'core/routes/app_router.dart';
+import 'core/theme/app_theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,8 +14,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp.router(
       title: 'Stock Tools',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFE6A72C)),
+        colorScheme: ColorScheme.fromSeed(seedColor: AppTheme.primaryGold),
         useMaterial3: true,
+        scaffoldBackgroundColor: AppTheme.backgroundColor,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: AppTheme.primaryButtonStyle,
+        ),
       ),
       routerConfig: AppRouter.router,
     );
