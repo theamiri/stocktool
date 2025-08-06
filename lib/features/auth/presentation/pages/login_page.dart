@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../shared/widgets/index.dart';
+import '../bloc/auth_bloc.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -93,11 +95,41 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 24),
 
                     // Login button
-                    PrimaryButton(
-                      text: 'Login',
-                      onPressed: () {
-                        // TODO: Handle login validation
-                        context.go('/dashboard');
+                    BlocConsumer<AuthBloc, AuthState>(
+                      listener: (context, state) {
+                        if (state is Authenticated) {
+                          context.go('/dashboard');
+                        }
+                      },
+                      builder: (context, state) {
+                        return PrimaryButton(
+                          text: state is AuthLoading
+                              ? 'Logging in...'
+                              : 'Login',
+                          onPressed: state is AuthLoading
+                              ? null
+                              : () {
+                                  final email = _emailController.text.trim();
+                                  final password = _passwordController.text
+                                      .trim();
+
+                                  if (email.isEmpty || password.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          'Please fill in all fields',
+                                        ),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                    return;
+                                  }
+
+                                  context.read<AuthBloc>().add(
+                                    SignInRequested(email, password),
+                                  );
+                                },
+                        );
                       },
                     ),
                     const SizedBox(height: 32),

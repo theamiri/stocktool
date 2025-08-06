@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../shared/widgets/index.dart';
+import '../bloc/auth_bloc.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -109,11 +111,65 @@ class _SignupPageState extends State<SignupPage> {
                     const SizedBox(height: 32),
 
                     // Sign up button
-                    PrimaryButton(
-                      text: 'SIGN UP',
-                      onPressed: () {
-                        // TODO: Handle signup validation
-                        context.go('/dashboard');
+                    BlocConsumer<AuthBloc, AuthState>(
+                      listener: (context, state) {
+                        if (state is Authenticated) {
+                          context.go('/dashboard');
+                        }
+                      },
+                      builder: (context, state) {
+                        return PrimaryButton(
+                          text: state is AuthLoading
+                              ? 'Creating Account...'
+                              : 'SIGN UP',
+                          onPressed: state is AuthLoading
+                              ? null
+                              : () {
+                                  final firstName = _firstNameController.text
+                                      .trim();
+                                  final lastName = _lastNameController.text
+                                      .trim();
+                                  final email = _emailController.text.trim();
+                                  final password = _passwordController.text
+                                      .trim();
+
+                                  if (firstName.isEmpty ||
+                                      lastName.isEmpty ||
+                                      email.isEmpty ||
+                                      password.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          'Please fill in all fields',
+                                        ),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                    return;
+                                  }
+
+                                  if (password.length < 6) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          'Password must be at least 6 characters',
+                                        ),
+                                        backgroundColor: Colors.red,
+                                      ),
+                                    );
+                                    return;
+                                  }
+
+                                  context.read<AuthBloc>().add(
+                                    SignUpRequested(
+                                      email,
+                                      password,
+                                      firstName,
+                                      lastName,
+                                    ),
+                                  );
+                                },
+                        );
                       },
                     ),
                   ],

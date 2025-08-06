@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../constants/dashboard_constants.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../auth/presentation/bloc/auth_bloc.dart';
 
 class DashboardHeader extends StatelessWidget {
   const DashboardHeader({super.key});
@@ -35,18 +37,71 @@ class DashboardHeader extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
-                // Empty space for balance
-                const SizedBox(width: 24),
+                // Logout button
+                IconButton(
+                  onPressed: () {
+                    context.read<AuthBloc>().add(SignOutRequested());
+                    // No need for manual navigation - GoRouter will handle it automatically
+                  },
+                  icon: Icon(
+                    Icons.logout,
+                    color: AppTheme.headerTextColor,
+                    size: 24,
+                  ),
+                ),
               ],
             ),
             const SizedBox(height: 20),
 
-            // User name
-            Text(DashboardConstants.userName, style: AppTheme.userNameStyle),
-            const SizedBox(height: 8),
-
-            // User email
-            Text(DashboardConstants.userEmail, style: AppTheme.userEmailStyle),
+            // User name and email
+            BlocBuilder<AuthBloc, AuthState>(
+              builder: (context, state) {
+                if (state is AuthLoading) {
+                  return Column(
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                            Colors.white,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text('Loading...', style: AppTheme.userEmailStyle),
+                    ],
+                  );
+                } else if (state is Authenticated) {
+                  return Column(
+                    children: [
+                      Text(
+                        'Welcome, ${state.user.firstName ?? 'User'}!',
+                        style: AppTheme.userNameStyle,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(state.user.email, style: AppTheme.userEmailStyle),
+                    ],
+                  );
+                } else {
+                  // Fallback to constants if not authenticated
+                  return Column(
+                    children: [
+                      Text(
+                        DashboardConstants.userName,
+                        style: AppTheme.userNameStyle,
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        DashboardConstants.userEmail,
+                        style: AppTheme.userEmailStyle,
+                      ),
+                    ],
+                  );
+                }
+              },
+            ),
           ],
         ),
       ),

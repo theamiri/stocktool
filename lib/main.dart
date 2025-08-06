@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'core/routes/app_router.dart';
 import 'core/theme/app_theme.dart';
+import 'features/auth/presentation/bloc/auth_bloc.dart';
+import 'features/auth/data/repositories/auth_repository_impl.dart';
+import 'features/auth/domain/usecases/sign_in_usecase.dart';
+import 'features/auth/domain/usecases/sign_up_usecase.dart';
+import 'features/auth/domain/usecases/sign_out_usecase.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  
+  try {
+    await Firebase.initializeApp();
+    print('Firebase initialized successfully in main');
+  } catch (e) {
+    print('Firebase initialization error in main: $e');
+  }
+  
   runApp(const MyApp());
 }
 
@@ -14,17 +27,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(
-      title: 'Stock Tools',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: AppTheme.primaryGold),
-        useMaterial3: true,
-        scaffoldBackgroundColor: AppTheme.backgroundColor,
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: AppTheme.primaryButtonStyle,
+    final authBloc = AuthBloc(
+      signInUseCase: SignInUseCase(AuthRepositoryImpl()),
+      signUpUseCase: SignUpUseCase(AuthRepositoryImpl()),
+      signOutUseCase: SignOutUseCase(AuthRepositoryImpl()),
+    );
+
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthBloc>.value(value: authBloc),
+      ],
+      child: MaterialApp.router(
+        title: 'Stock Tools',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: AppTheme.primaryGold),
+          useMaterial3: true,
+          scaffoldBackgroundColor: AppTheme.backgroundColor,
+          elevatedButtonTheme: ElevatedButtonThemeData(
+            style: AppTheme.primaryButtonStyle,
+          ),
         ),
+        routerConfig: AppRouter.createRouter(authBloc),
       ),
-      routerConfig: AppRouter.router,
     );
   }
 }
