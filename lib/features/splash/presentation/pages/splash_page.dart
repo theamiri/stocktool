@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import '../constants/splash_constants.dart';
+import '../../../../core/theme/app_theme.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -27,7 +28,7 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: SplashConstants.backgroundColor,
+      backgroundColor: AppTheme.backgroundColor,
       body: Stack(
         children: [
           Positioned(
@@ -39,8 +40,8 @@ class _SplashPageState extends State<SplashPage> {
               child: SvgPicture.asset(
                 'assets/svgs/mesh.svg',
                 fit: BoxFit.cover,
-                colorFilter: const ColorFilter.mode(
-                  SplashConstants.primaryGold,
+                colorFilter: ColorFilter.mode(
+                  AppTheme.primaryGold,
                   BlendMode.srcIn,
                 ),
               ),
@@ -64,10 +65,10 @@ class _SplashPageState extends State<SplashPage> {
                 // Location text
                 Text(
                   SplashConstants.locationText,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: SplashConstants.locationFontSize,
                     fontWeight: FontWeight.w400,
-                    color: SplashConstants.textColor,
+                    color: AppTheme.textColor,
                     letterSpacing: 4.0,
                   ),
                 ),

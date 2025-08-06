@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../constants/dashboard_constants.dart';
+import '../../../../core/theme/app_theme.dart';
 
 class DashboardButton extends StatelessWidget {
   final IconData icon;
@@ -19,8 +20,8 @@ class DashboardButton extends StatelessWidget {
       width: double.infinity,
       height: DashboardConstants.buttonHeight,
       decoration: BoxDecoration(
-        color: DashboardConstants.primaryGold,
-        borderRadius: BorderRadius.circular(12),
+        color: AppTheme.primaryGold,
+        borderRadius: BorderRadius.circular(AppTheme.inputBorderRadius),
       ),
       child: Material(
         color: Colors.transparent,
@@ -32,24 +33,17 @@ class DashboardButton extends StatelessWidget {
             child: Row(
               children: [
                 // Icon
-                Icon(icon, color: DashboardConstants.headerTextColor, size: 24),
+                Icon(icon, color: AppTheme.headerTextColor, size: 24),
                 const SizedBox(width: 16),
 
                 // Title
-                Text(
-                  title,
-                  style: const TextStyle(
-                    color: DashboardConstants.headerTextColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
+                Text(title, style: AppTheme.buttonTextStyle),
                 const Spacer(),
 
                 // Arrow icon
-                const Icon(
+                Icon(
                   Icons.arrow_forward_ios,
-                  color: DashboardConstants.headerTextColor,
+                  color: AppTheme.headerTextColor,
                   size: 16,
                 ),
               ],

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../constants/dashboard_constants.dart';
 import '../../../../core/theme/app_theme.dart';
 
 class DashboardCard extends StatelessWidget {
@@ -29,7 +28,7 @@ class DashboardCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Icon
-                Icon(icon, color: DashboardConstants.cardTextColor, size: 32),
+                Icon(icon, color: AppTheme.cardTextColor, size: 32),
                 const SizedBox(height: 12),
 
                 // Title

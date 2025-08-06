@@ -8,33 +8,29 @@ class DashboardHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: DashboardConstants.headerHeight,
+      height: AppTheme.headerHeight,
       decoration: AppTheme.headerDecoration,
       child: Padding(
-        padding: const EdgeInsets.all(DashboardConstants.headerPadding),
+        padding: const EdgeInsets.all(AppTheme.paddingLarge),
         child: Column(
           children: [
             // Top row with menu and user info
             Row(
               children: [
                 // Menu icon
-                const Icon(
-                  Icons.menu,
-                  color: DashboardConstants.headerTextColor,
-                  size: 24,
-                ),
+                Icon(Icons.menu, color: AppTheme.headerTextColor, size: 24),
                 const Spacer(),
                 // User profile icon
                 Container(
                   width: 60,
                   height: 60,
-                  decoration: const BoxDecoration(
-                    color: DashboardConstants.headerTextColor,
+                  decoration: BoxDecoration(
+                    color: AppTheme.headerTextColor,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.person,
-                    color: DashboardConstants.primaryGold,
+                    color: AppTheme.primaryGold,
                     size: 30,
                   ),
                 ),
@@ -46,17 +42,11 @@ class DashboardHeader extends StatelessWidget {
             const SizedBox(height: 20),
 
             // User name
-            const Text(
-              DashboardConstants.userName,
-              style: AppTheme.userNameStyle,
-            ),
+            Text(DashboardConstants.userName, style: AppTheme.userNameStyle),
             const SizedBox(height: 8),
 
             // User email
-            const Text(
-              DashboardConstants.userEmail,
-              style: AppTheme.userEmailStyle,
-            ),
+            Text(DashboardConstants.userEmail, style: AppTheme.userEmailStyle),
           ],
         ),
       ),

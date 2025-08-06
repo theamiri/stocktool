@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../constants/auth_constants.dart';
 import '../../../../core/theme/app_theme.dart';
 
 class SignupPage extends StatefulWidget {
@@ -69,32 +68,21 @@ class _SignupPageState extends State<SignupPage> {
                   children: [
                     // First Name field
                     Container(
-                      decoration: BoxDecoration(
-                        color:
+                      decoration: AppTheme.inputContainerDecoration(
+                        isFocused: _firstNameFocusNode.hasFocus,
+                        backgroundColor:
                             _firstNameController.text.isEmpty &&
                                 !_firstNameFocusNode.hasFocus
-                            ? Colors.grey[100]
-                            : Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: _firstNameFocusNode.hasFocus
-                              ? AuthConstants.primaryGold
-                              : Colors.grey[300]!,
-                          width: 1,
-                        ),
+                            ? AppTheme.inactiveFieldColor
+                            : AppTheme.cardBackgroundColor,
                       ),
                       child: TextField(
                         controller: _firstNameController,
                         focusNode: _firstNameFocusNode,
                         onTap: () => setState(() {}),
                         onChanged: (value) => setState(() {}),
-                        decoration: const InputDecoration(
+                        decoration: AppTheme.inputDecoration(
                           hintText: 'First Name',
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 16,
-                          ),
                         ),
                       ),
                     ),
@@ -102,19 +90,13 @@ class _SignupPageState extends State<SignupPage> {
 
                     // Last Name field
                     Container(
-                      decoration: BoxDecoration(
-                        color:
+                      decoration: AppTheme.inputContainerDecoration(
+                        isFocused: _lastNameFocusNode.hasFocus,
+                        backgroundColor:
                             _lastNameController.text.isEmpty &&
                                 !_lastNameFocusNode.hasFocus
-                            ? Colors.grey[100]
-                            : Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: _lastNameFocusNode.hasFocus
-                              ? AuthConstants.primaryGold
-                              : Colors.grey[300]!,
-                          width: 1,
-                        ),
+                            ? AppTheme.inactiveFieldColor
+                            : AppTheme.cardBackgroundColor,
                       ),
                       child: TextField(
                         controller: _lastNameController,
@@ -135,19 +117,13 @@ class _SignupPageState extends State<SignupPage> {
 
                     // Email field
                     Container(
-                      decoration: BoxDecoration(
-                        color:
+                      decoration: AppTheme.inputContainerDecoration(
+                        isFocused: _emailFocusNode.hasFocus,
+                        backgroundColor:
                             _emailController.text.isEmpty &&
                                 !_emailFocusNode.hasFocus
-                            ? Colors.grey[100]
-                            : Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: _emailFocusNode.hasFocus
-                              ? AuthConstants.primaryGold
-                              : Colors.grey[300]!,
-                          width: 1,
-                        ),
+                            ? AppTheme.inactiveFieldColor
+                            : AppTheme.cardBackgroundColor,
                       ),
                       child: TextField(
                         controller: _emailController,
@@ -168,19 +144,13 @@ class _SignupPageState extends State<SignupPage> {
 
                     // Password field
                     Container(
-                      decoration: BoxDecoration(
-                        color:
+                      decoration: AppTheme.inputContainerDecoration(
+                        isFocused: _passwordFocusNode.hasFocus,
+                        backgroundColor:
                             _passwordController.text.isEmpty &&
                                 !_passwordFocusNode.hasFocus
-                            ? Colors.grey[100]
-                            : Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(
-                          color: _passwordFocusNode.hasFocus
-                              ? AuthConstants.primaryGold
-                              : Colors.grey[300]!,
-                          width: 1,
-                        ),
+                            ? AppTheme.inactiveFieldColor
+                            : AppTheme.cardBackgroundColor,
                       ),
                       child: TextField(
                         controller: _passwordController,
@@ -188,7 +158,7 @@ class _SignupPageState extends State<SignupPage> {
                         onTap: () => setState(() {}),
                         onChanged: (value) => setState(() {}),
                         obscureText: !_isPasswordVisible,
-                        decoration: InputDecoration(
+                        decoration: AppTheme.inputDecoration(
                           hintText: 'Password',
                           suffixIcon: IconButton(
                             icon: Icon(
@@ -202,11 +172,6 @@ class _SignupPageState extends State<SignupPage> {
                                 _isPasswordVisible = !_isPasswordVisible;
                               });
                             },
-                          ),
-                          border: InputBorder.none,
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 16,
                           ),
                         ),
                       ),
@@ -222,20 +187,8 @@ class _SignupPageState extends State<SignupPage> {
                           // TODO: Handle signup validation
                           context.go('/dashboard');
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AuthConstants.primaryGold,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: const Text(
-                          'SIGN UP',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+                        style: AppTheme.primaryButtonStyle,
+                        child: Text('SIGN UP', style: AppTheme.buttonTextStyle),
                       ),
                     ),
                   ],
@@ -248,22 +201,15 @@ class _SignupPageState extends State<SignupPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text(
+                    Text(
                       'Already have account? ',
-                      style: TextStyle(color: Colors.grey, fontSize: 14),
+                      style: AppTheme.hintTextStyle,
                     ),
                     GestureDetector(
                       onTap: () {
                         context.go('/login');
                       },
-                      child: const Text(
-                        'Login Now',
-                        style: TextStyle(
-                          color: AuthConstants.primaryGold,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      child: Text('Login Now', style: AppTheme.linkTextStyle),
                     ),
                   ],
                 ),
