@@ -20,8 +20,8 @@ class SocialLoginButton extends StatelessWidget {
         height: 50,
         decoration: BoxDecoration(
           color: Colors.white,
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.grey[300]!, width: 1),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey[300]!),
         ),
         child: Center(child: SvgPicture.asset(icon, width: 24, height: 24)),
       ),

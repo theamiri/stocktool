@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../constants/dashboard_constants.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../shared/widgets/index.dart';
 
 class DashboardFooter extends StatelessWidget {
   const DashboardFooter({super.key});
@@ -13,11 +14,9 @@ class DashboardFooter extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // Logo
-          Image.asset(
-            'assets/images/app_logo.png',
+          AppLogo(
             width: AppTheme.smallLogoSize,
             height: AppTheme.smallLogoSize,
-            fit: BoxFit.contain,
           ),
           const SizedBox(width: 12),
 

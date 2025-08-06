@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../shared/widgets/index.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -53,12 +54,7 @@ class _SignupPageState extends State<SignupPage> {
               // Top section with logo and branding
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 60),
-                child: Image.asset(
-                  'assets/images/app_logo.png',
-                  width: 180,
-                  height: 180,
-                  fit: BoxFit.contain,
-                ),
+                child: AppLogo(width: 180, height: 180),
               ),
 
               // Form section
@@ -67,129 +63,58 @@ class _SignupPageState extends State<SignupPage> {
                 child: Column(
                   children: [
                     // First Name field
-                    Container(
-                      decoration: AppTheme.inputContainerDecoration(
-                        isFocused: _firstNameFocusNode.hasFocus,
-                        backgroundColor:
-                            _firstNameController.text.isEmpty &&
-                                !_firstNameFocusNode.hasFocus
-                            ? AppTheme.inactiveFieldColor
-                            : AppTheme.cardBackgroundColor,
-                      ),
-                      child: TextField(
-                        controller: _firstNameController,
-                        focusNode: _firstNameFocusNode,
-                        onTap: () => setState(() {}),
-                        onChanged: (value) => setState(() {}),
-                        decoration: AppTheme.inputDecoration(
-                          hintText: 'First Name',
-                        ),
-                      ),
+                    CustomTextField(
+                      controller: _firstNameController,
+                      focusNode: _firstNameFocusNode,
+                      hintText: 'First Name',
                     ),
                     const SizedBox(height: 16),
 
                     // Last Name field
-                    Container(
-                      decoration: AppTheme.inputContainerDecoration(
-                        isFocused: _lastNameFocusNode.hasFocus,
-                        backgroundColor:
-                            _lastNameController.text.isEmpty &&
-                                !_lastNameFocusNode.hasFocus
-                            ? AppTheme.inactiveFieldColor
-                            : AppTheme.cardBackgroundColor,
-                      ),
-                      child: TextField(
-                        controller: _lastNameController,
-                        focusNode: _lastNameFocusNode,
-                        onTap: () => setState(() {}),
-                        onChanged: (value) => setState(() {}),
-                        decoration: const InputDecoration(
-                          hintText: 'Last Name',
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 16,
-                          ),
-                        ),
-                      ),
+                    CustomTextField(
+                      controller: _lastNameController,
+                      focusNode: _lastNameFocusNode,
+                      hintText: 'Last Name',
                     ),
                     const SizedBox(height: 16),
 
                     // Email field
-                    Container(
-                      decoration: AppTheme.inputContainerDecoration(
-                        isFocused: _emailFocusNode.hasFocus,
-                        backgroundColor:
-                            _emailController.text.isEmpty &&
-                                !_emailFocusNode.hasFocus
-                            ? AppTheme.inactiveFieldColor
-                            : AppTheme.cardBackgroundColor,
-                      ),
-                      child: TextField(
-                        controller: _emailController,
-                        focusNode: _emailFocusNode,
-                        onTap: () => setState(() {}),
-                        onChanged: (value) => setState(() {}),
-                        decoration: const InputDecoration(
-                          hintText: 'Email',
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 16,
-                          ),
-                        ),
-                      ),
+                    CustomTextField(
+                      controller: _emailController,
+                      focusNode: _emailFocusNode,
+                      hintText: 'Email',
                     ),
                     const SizedBox(height: 16),
 
                     // Password field
-                    Container(
-                      decoration: AppTheme.inputContainerDecoration(
-                        isFocused: _passwordFocusNode.hasFocus,
-                        backgroundColor:
-                            _passwordController.text.isEmpty &&
-                                !_passwordFocusNode.hasFocus
-                            ? AppTheme.inactiveFieldColor
-                            : AppTheme.cardBackgroundColor,
-                      ),
-                      child: TextField(
-                        controller: _passwordController,
-                        focusNode: _passwordFocusNode,
-                        onTap: () => setState(() {}),
-                        onChanged: (value) => setState(() {}),
-                        obscureText: !_isPasswordVisible,
-                        decoration: AppTheme.inputDecoration(
-                          hintText: 'Password',
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _isPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _isPasswordVisible = !_isPasswordVisible;
-                              });
-                            },
-                          ),
+                    CustomTextField(
+                      controller: _passwordController,
+                      focusNode: _passwordFocusNode,
+                      hintText: 'Password',
+                      obscureText: !_isPasswordVisible,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.grey,
                         ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
                       ),
                     ),
                     const SizedBox(height: 32),
 
                     // Sign up button
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // TODO: Handle signup validation
-                          context.go('/dashboard');
-                        },
-                        style: AppTheme.primaryButtonStyle,
-                        child: Text('SIGN UP', style: AppTheme.buttonTextStyle),
-                      ),
+                    PrimaryButton(
+                      text: 'SIGN UP',
+                      onPressed: () {
+                        // TODO: Handle signup validation
+                        context.go('/dashboard');
+                      },
                     ),
                   ],
                 ),

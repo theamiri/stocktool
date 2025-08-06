@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../widgets/social_login_button.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../shared/widgets/index.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -38,12 +38,7 @@ class _LoginPageState extends State<LoginPage> {
               // Top section with logo and branding
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 60),
-                child: Image.asset(
-                  'assets/images/app_logo.png',
-                  width: 180,
-                  height: 180,
-                  fit: BoxFit.contain,
-                ),
+                child: AppLogo(width: 180, height: 180),
               ),
               // Form section
               Expanded(
@@ -51,61 +46,33 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   children: [
                     // Email field
-                    Container(
-                      decoration: AppTheme.inputContainerDecoration(
-                        isFocused: _emailFocusNode.hasFocus,
-                        backgroundColor:
-                            _emailController.text.isEmpty &&
-                                !_emailFocusNode.hasFocus
-                            ? AppTheme.inactiveFieldColor
-                            : AppTheme.cardBackgroundColor,
-                      ),
-                      child: TextField(
-                        controller: _emailController,
-                        focusNode: _emailFocusNode,
-                        onTap: () => setState(() {}),
-                        onChanged: (value) => setState(() {}),
-                        decoration: AppTheme.inputDecoration(
-                          hintText: 'Email',
-                          prefixIcon: Icons.email,
-                        ),
-                      ),
+                    CustomTextField(
+                      controller: _emailController,
+                      focusNode: _emailFocusNode,
+                      hintText: 'Email',
+                      prefixIcon: Icons.email,
                     ),
                     const SizedBox(height: 16),
 
                     // Password field
-                    Container(
-                      decoration: AppTheme.inputContainerDecoration(
-                        isFocused: _passwordFocusNode.hasFocus,
-                        backgroundColor:
-                            _passwordController.text.isEmpty &&
-                                !_passwordFocusNode.hasFocus
-                            ? AppTheme.inactiveFieldColor
-                            : AppTheme.cardBackgroundColor,
-                      ),
-                      child: TextField(
-                        controller: _passwordController,
-                        focusNode: _passwordFocusNode,
-                        onTap: () => setState(() {}),
-                        onChanged: (value) => setState(() {}),
-                        obscureText: !_isPasswordVisible,
-                        decoration: AppTheme.inputDecoration(
-                          hintText: 'Password',
-                          prefixIcon: Icons.lock,
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _isPasswordVisible
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
-                              color: Colors.grey,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _isPasswordVisible = !_isPasswordVisible;
-                              });
-                            },
-                          ),
+                    CustomTextField(
+                      controller: _passwordController,
+                      focusNode: _passwordFocusNode,
+                      hintText: 'Password',
+                      prefixIcon: Icons.lock,
+                      obscureText: !_isPasswordVisible,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: Colors.grey,
                         ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -126,17 +93,12 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 24),
 
                     // Login button
-                    SizedBox(
-                      width: double.infinity,
-                      height: 50,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // TODO: Handle login validation
-                          context.go('/dashboard');
-                        },
-                        style: AppTheme.primaryButtonStyle,
-                        child: Text('Login', style: AppTheme.buttonTextStyle),
-                      ),
+                    PrimaryButton(
+                      text: 'Login',
+                      onPressed: () {
+                        // TODO: Handle login validation
+                        context.go('/dashboard');
+                      },
                     ),
                     const SizedBox(height: 32),
 

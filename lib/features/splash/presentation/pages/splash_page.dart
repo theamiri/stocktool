@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import '../constants/splash_constants.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../shared/widgets/index.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({super.key});
@@ -53,11 +54,9 @@ class _SplashPageState extends State<SplashPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // Logo
-                Image.asset(
-                  'assets/images/app_logo.png',
+                AppLogo(
                   width: SplashConstants.logoSize,
                   height: SplashConstants.logoSize,
-                  fit: BoxFit.contain,
                 ),
 
                 SizedBox(height: SplashConstants.subtitleBottomSpacing),
