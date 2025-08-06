@@ -2,14 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../constants/splash_constants.dart';
 
-class SplashPage extends StatefulWidget {
+class SplashPage extends StatelessWidget {
   const SplashPage({super.key});
 
-  @override
-  State<SplashPage> createState() => _SplashPageState();
-}
-
-class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,19 +27,22 @@ class _SplashPageState extends State<SplashPage> {
               ),
             ),
           ),
-          Positioned.fill(
+          // Main content
+          Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
               children: [
+                // Logo
                 Image.asset(
                   'assets/images/app_logo.png',
                   width: SplashConstants.logoSize,
                   height: SplashConstants.logoSize,
                   fit: BoxFit.contain,
                 ),
+
                 SizedBox(height: SplashConstants.subtitleBottomSpacing),
+
+                // Location text
                 Text(
                   SplashConstants.locationText,
                   style: const TextStyle(
