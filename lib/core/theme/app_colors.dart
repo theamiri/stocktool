@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Primary Colors - Golden Yellow/Orange from the design
-  static const Color primary = Color(0xFFFFB74D); // Golden yellow/orange
+  static const Color primary = Color(0xFFE6A72C); // Golden yellow/orange from screenshot
   static const Color primaryLight = Color(0xFFFFCC80);
   static const Color primaryDark = Color(0xFFFF8F00);
   static const Color primaryVariant = Color(
@@ -49,6 +49,7 @@ class AppColors {
 
   // Input Colors
   static const Color inputBackground = Color(0xFFF5F5F5);
+  static const Color backgroundSecondary = Color(0xFFF5F5F5);
   static const Color inputBorder = Color(0xFFE0E0E0);
   static const Color inputFocused = Color(0xFFFFB74D);
 
