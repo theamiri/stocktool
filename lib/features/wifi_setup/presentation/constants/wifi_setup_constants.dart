@@ -31,5 +31,5 @@ class WifiSetupConstants {
   // Spacing
   static const double padding = 16.0;
   static const double largePadding = 30.0;
-  static const double extraLargePadding = 32.0;
+  static const double extraLargePadding = 40.0;
 }

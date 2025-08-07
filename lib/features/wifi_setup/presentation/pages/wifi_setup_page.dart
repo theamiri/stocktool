@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
-import 'package:stocktool/core/theme/app_theme.dart';
 import '../../../../shared/widgets/custom_text_field.dart';
 import '../constants/wifi_setup_constants.dart';
 
@@ -29,13 +27,8 @@ class _WifiSetupPageState extends State<WifiSetupPage> {
   void initState() {
     super.initState();
     // Pre-fill network name if provided
-    if (widget.selectedNetworkName != null &&
-        widget.selectedNetworkName!.isNotEmpty) {
-      _networkController.text = widget.selectedNetworkName!;
-      print('Network name set: ${widget.selectedNetworkName}');
-    } else {
-      print('No network name provided');
-    }
+
+    _networkController.text = widget.selectedNetworkName!;
 
     // Add listener for password validation
     _passwordController.addListener(_validatePassword);
