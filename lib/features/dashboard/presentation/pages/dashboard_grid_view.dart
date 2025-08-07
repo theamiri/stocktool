@@ -47,7 +47,7 @@ class DashboardGridView extends StatelessWidget {
                   icon: 'assets/svgs/setup_wifi.svg',
                   title: 'SETUP WIFI',
                   onTap: () {
-                    // TODO: Navigate to setup wifi
+                    Navigator.pushNamed(context, '/wifi-setup');
                   },
                 ),
                 _buildFeatureCard(

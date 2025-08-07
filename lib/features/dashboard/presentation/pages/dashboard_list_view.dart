@@ -37,7 +37,7 @@ class DashboardListView extends StatelessWidget {
                   icon: 'assets/svgs/setup_wifi.svg',
                   text: 'SETUP WIFI',
                   onTap: () {
-                    // TODO: Navigate to setup wifi
+                    Navigator.pushNamed(context, '/wifi-setup');
                   },
                 ),
                 const SizedBox(height: 16),
