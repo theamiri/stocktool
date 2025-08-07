@@ -4,7 +4,6 @@ import '../constants/wifi_setup_constants.dart';
 import '../widgets/wifi_networks_button.dart';
 import '../widgets/app_logo_footer.dart';
 import '../widgets/wifi_icon_animation.dart';
-import '../widgets/background_pattern.dart';
 
 class WifiNetworksPage extends StatelessWidget {
   const WifiNetworksPage({super.key});
