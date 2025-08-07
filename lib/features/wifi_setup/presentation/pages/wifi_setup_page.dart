@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
 import '../constants/wifi_setup_constants.dart';
 
 class WifiSetupPage extends StatefulWidget {
@@ -36,7 +37,7 @@ class _WifiSetupPageState extends State<WifiSetupPage> {
                 child: Row(
                   children: [
                     IconButton(
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () => context.pop(),
                       icon: const Icon(
                         Icons.arrow_back,
                         color: Colors.white,
@@ -178,7 +179,7 @@ class _WifiSetupPageState extends State<WifiSetupPage> {
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.of(context).pushNamed('/wifi-connected');
+                          context.push('/wifi-connected');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: WifiSetupConstants.primaryGold,

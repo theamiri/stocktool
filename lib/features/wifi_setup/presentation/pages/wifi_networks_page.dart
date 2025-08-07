@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../constants/wifi_setup_constants.dart';
 import '../widgets/wifi_networks_button.dart';
 import '../widgets/app_logo_footer.dart';
@@ -27,7 +28,7 @@ class WifiNetworksPage extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(WifiSetupConstants.padding),
                     child: IconButton(
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () => context.pop(),
                       icon: const Icon(
                         Icons.arrow_back,
                         color: Colors.black,
@@ -53,7 +54,7 @@ class WifiNetworksPage extends StatelessWidget {
                         // WiFi networks button
                         WifiNetworksButton(
                           onPressed: () {
-                            Navigator.of(context).pushNamed('/wifi-setup');
+                            context.push('/wifi-setup');
                           },
                         ),
                       ],

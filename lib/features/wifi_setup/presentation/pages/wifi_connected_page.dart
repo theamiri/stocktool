@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../constants/wifi_setup_constants.dart';
 import '../widgets/app_logo_footer.dart';
 import '../widgets/wifi_icon_animation.dart';
@@ -26,7 +27,7 @@ class WifiConnectedPage extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(WifiSetupConstants.padding),
                     child: IconButton(
-                      onPressed: () => Navigator.of(context).pop(),
+                      onPressed: () => context.pop(),
                       icon: const Icon(
                         Icons.arrow_back,
                         color: Colors.black,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../widgets/dashboard_button.dart';
 import '../widgets/dashboard_header.dart';
 import '../widgets/dashboard_footer.dart';
@@ -46,7 +47,7 @@ class DashboardView1Page extends StatelessWidget {
                       icon: Icons.wifi,
                       title: 'SETUP WIFI',
                       onPressed: () {
-                        Navigator.of(context).pushNamed('/wifi-networks');
+                        context.push('/wifi-networks');
                       },
                     ),
                     const SizedBox(height: 16),
