@@ -81,7 +81,7 @@ class DashboardView2Page extends StatelessWidget {
                             icon: Icons.wifi,
                             title: 'SETUP WIFI',
                             onPressed: () {
-                              // TODO: Handle setup wifi
+                              Navigator.of(context).pushNamed('/wifi-networks');
                             },
                           ),
                           DashboardCard(

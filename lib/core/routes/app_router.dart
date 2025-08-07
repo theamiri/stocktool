@@ -7,6 +7,9 @@ import '../../features/splash/presentation/pages/splash_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/signup_page.dart';
 import '../../features/dashboard/presentation/pages/dashboard_page.dart';
+import '../../features/wifi_setup/presentation/pages/wifi_networks_page.dart';
+import '../../features/wifi_setup/presentation/pages/wifi_setup_page.dart';
+import '../../features/wifi_setup/presentation/pages/wifi_connected_page.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 
 class AppRouter {
@@ -65,6 +68,22 @@ class AppRouter {
           path: '/dashboard',
           name: 'dashboard',
           builder: (context, state) => const DashboardPage(),
+        ),
+
+        GoRoute(
+          path: '/wifi-networks',
+          name: 'wifi-networks',
+          builder: (context, state) => const WifiNetworksPage(),
+        ),
+        GoRoute(
+          path: '/wifi-setup',
+          name: 'wifi-setup',
+          builder: (context, state) => const WifiSetupPage(),
+        ),
+        GoRoute(
+          path: '/wifi-connected',
+          name: 'wifi-connected',
+          builder: (context, state) => const WifiConnectedPage(),
         ),
       ],
     );
