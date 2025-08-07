@@ -50,7 +50,7 @@ class WifiIconAnimation extends StatelessWidget {
             decoration: BoxDecoration(
               color: isConnected
                   ? WifiSetupConstants.primaryGold
-                  : Colors.white.withOpacity(0.9),
+                  : const Color(0xFFF5F5DC), // Light beige background
               borderRadius: BorderRadius.circular(12),
             ),
             child: Center(
@@ -60,10 +60,6 @@ class WifiIconAnimation extends StatelessWidget {
                       WifiSetupConstants.wifiIconPath,
                       width: size * 0.25,
                       height: size * 0.25,
-                      colorFilter: const ColorFilter.mode(
-                        WifiSetupConstants.primaryGold,
-                        BlendMode.srcIn,
-                      ),
                     ),
             ),
           ),

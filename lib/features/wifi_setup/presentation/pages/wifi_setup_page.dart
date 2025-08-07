@@ -65,10 +65,6 @@ class _WifiSetupPageState extends State<WifiSetupPage> {
                             WifiSetupConstants.stockToolsIconPath,
                             width: 60,
                             height: 60,
-                            colorFilter: const ColorFilter.mode(
-                              WifiSetupConstants.primaryGold,
-                              BlendMode.srcIn,
-                            ),
                           ),
                           const SizedBox(height: WifiSetupConstants.padding),
                           const Text(

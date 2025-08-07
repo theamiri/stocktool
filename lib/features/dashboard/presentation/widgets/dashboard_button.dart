@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../constants/dashboard_constants.dart';
 import '../../../../core/theme/app_theme.dart';
 
 class DashboardButton extends StatelessWidget {
-  final IconData icon;
+  final String iconPath;
   final String title;
   final VoidCallback onPressed;
 
   const DashboardButton({
     super.key,
-    required this.icon,
+    required this.iconPath,
     required this.title,
     required this.onPressed,
   });
@@ -33,7 +34,7 @@ class DashboardButton extends StatelessWidget {
             child: Row(
               children: [
                 // Icon
-                Icon(icon, color: AppTheme.headerTextColor, size: 24),
+                SvgPicture.asset(iconPath, width: 24, height: 24),
                 const SizedBox(width: 16),
 
                 // Title

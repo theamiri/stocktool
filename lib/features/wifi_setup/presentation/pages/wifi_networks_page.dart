@@ -15,9 +15,6 @@ class WifiNetworksPage extends StatelessWidget {
       backgroundColor: WifiSetupConstants.backgroundColor,
       body: Stack(
         children: [
-          // Background pattern
-          const BackgroundPattern(),
-
           // Main content
           SafeArea(
             child: Column(
@@ -45,11 +42,9 @@ class WifiNetworksPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         // WiFi icon animation
-                        const WifiIconAnimation(size: 120, isConnected: false),
+                        const WifiIconAnimation(size: 140, isConnected: false),
 
-                        const SizedBox(
-                          height: WifiSetupConstants.extraLargePadding,
-                        ),
+                        const SizedBox(height: WifiSetupConstants.largePadding),
 
                         // WiFi networks button
                         WifiNetworksButton(

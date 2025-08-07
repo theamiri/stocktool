@@ -104,10 +104,6 @@ class _SplashPageState extends State<SplashPage> {
                 child: SvgPicture.asset(
                   'assets/svgs/mesh.svg',
                   fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(
-                    AppTheme.primaryGold,
-                    BlendMode.srcIn,
-                  ),
                 ),
               ),
             ),

@@ -15,7 +15,8 @@ class BackgroundPatternPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.white.withOpacity(0.1)
+      ..color = Colors.white
+          .withOpacity(0.05) // More subtle pattern
       ..strokeWidth = 1;
 
     // Draw dots pattern

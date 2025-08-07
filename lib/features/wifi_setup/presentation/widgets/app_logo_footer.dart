@@ -15,17 +15,16 @@ class AppLogoFooter extends StatelessWidget {
           // App logo
           SvgPicture.asset(
             WifiSetupConstants.stockToolsIconPath,
-            width: 32,
-            height: 32,
-            colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+            width: 24,
+            height: 24,
           ),
-          const SizedBox(width: WifiSetupConstants.padding),
+          const SizedBox(width: 8),
           // App name
           const Text(
             WifiSetupConstants.appName,
             style: TextStyle(
               color: Colors.white,
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.w600,
             ),
           ),

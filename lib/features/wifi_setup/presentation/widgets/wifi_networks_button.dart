@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../constants/wifi_setup_constants.dart';
 
 class WifiNetworksButton extends StatelessWidget {
@@ -45,10 +46,12 @@ class WifiNetworksButton extends StatelessWidget {
                     color: WifiSetupConstants.iconColor,
                     borderRadius: BorderRadius.circular(4),
                   ),
-                  child: const Icon(
-                    Icons.router,
-                    color: Colors.white,
-                    size: 16,
+                  child: Center(
+                    child: SvgPicture.asset(
+                      'assets/svgs/router.svg',
+                      width: 16,
+                      height: 16,
+                    ),
                   ),
                 ),
                 const SizedBox(width: WifiSetupConstants.padding),
