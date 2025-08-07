@@ -125,6 +125,7 @@ class _SignupPageState extends State<SignupPage> {
                         text: 'SIGN UP',
                         onPressed: () {
                           // TODO: Handle signup validation
+                          Navigator.pushReplacementNamed(context, '/dashboard');
                         },
                       ),
                     ],

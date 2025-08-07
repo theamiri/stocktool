@@ -112,6 +112,7 @@ class _LoginPageState extends State<LoginPage> {
                         text: 'Login',
                         onPressed: () {
                           // TODO: Handle login validation
+                          Navigator.pushReplacementNamed(context, '/dashboard');
                         },
                       ),
                       const SizedBox(height: 32),

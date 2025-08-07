@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'features/splash/presentation/splash_screen.dart';
 import 'features/auth/presentation/pages/login_page.dart';
 import 'features/auth/presentation/pages/signup_page.dart';
+import 'features/dashboard/presentation/pages/dashboard_page.dart';
 import 'core/theme/index.dart';
 
 void main() {
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SplashScreen(),
         '/login': (context) => const LoginPage(),
         '/signup': (context) => const SignupPage(),
+        '/dashboard': (context) => const DashboardPage(),
       },
     );
   }
