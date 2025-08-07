@@ -7,25 +7,28 @@ class AppLogoFooter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Positioned(
-      bottom: WifiSetupConstants.largePadding,
-      left: WifiSetupConstants.largePadding,
-      child: Row(
+    return SizedBox(
+      width: MediaQuery.of(context).size.width,
+      height: 200,
+      child: Stack(
         children: [
-          // App logo
-          SvgPicture.asset(
-            WifiSetupConstants.stockToolsIconPath,
-            width: 24,
-            height: 24,
+          Center(
+            child: SvgPicture.asset(
+              WifiSetupConstants.stockToolsIconPath,
+              width: 180,
+            ),
           ),
-          const SizedBox(width: 8),
-          // App name
-          const Text(
-            WifiSetupConstants.appName,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
+          Positioned(
+            bottom: -80,
+            left: 0,
+            right: 0,
+            child: SvgPicture.asset(
+              'assets/svgs/mesh.svg',
+
+              colorFilter: ColorFilter.mode(
+                Colors.white.withOpacity(0.5),
+                BlendMode.srcIn,
+              ),
             ),
           ),
         ],

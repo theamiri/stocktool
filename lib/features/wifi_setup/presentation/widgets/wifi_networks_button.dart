@@ -9,65 +9,37 @@ class WifiNetworksButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: WifiSetupConstants.cardBackgroundColor,
-        borderRadius: BorderRadius.circular(
-          WifiSetupConstants.buttonBorderRadius,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onPressed,
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: WifiSetupConstants.cardBackgroundColor,
+        foregroundColor: WifiSetupConstants.iconColor,
+        elevation: 8,
+        shadowColor: Colors.black.withOpacity(0.1),
+        shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
             WifiSetupConstants.buttonBorderRadius,
           ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: WifiSetupConstants.largePadding,
-              vertical: WifiSetupConstants.padding,
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                // Router icon
-                Container(
-                  width: WifiSetupConstants.iconSize,
-                  height: WifiSetupConstants.iconSize,
-                  decoration: BoxDecoration(
-                    color: WifiSetupConstants.iconColor,
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Center(
-                    child: SvgPicture.asset(
-                      'assets/svgs/router.svg',
-                      width: 16,
-                      height: 16,
-                    ),
-                  ),
-                ),
-                const SizedBox(width: WifiSetupConstants.padding),
-                // Button text
-                Text(
-                  WifiSetupConstants.wifiNetworksButtonText,
-                  style: const TextStyle(
-                    color: WifiSetupConstants.iconColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ],
+        ),
+        padding: const EdgeInsets.symmetric(
+          horizontal: WifiSetupConstants.largePadding,
+          vertical: WifiSetupConstants.padding,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          SvgPicture.asset('assets/svgs/router.svg', width: 20, height: 20),
+          const SizedBox(width: WifiSetupConstants.padding),
+          Text(
+            WifiSetupConstants.wifiNetworksButtonText,
+            style: const TextStyle(
+              color: WifiSetupConstants.iconColor,
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
             ),
           ),
-        ),
+        ],
       ),
     );
   }

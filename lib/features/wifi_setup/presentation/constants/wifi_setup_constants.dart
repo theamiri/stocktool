@@ -20,6 +20,7 @@ class WifiSetupConstants {
   // Icons
   static const String wifiIconPath = 'assets/svgs/wifi_icon.svg';
   static const String stockToolsIconPath = 'assets/svgs/stock_tools_icon.svg';
+  static const String meshPath = 'assets/svgs/mesh.svg';
 
   // Dimensions
   static const double cardBorderRadius = 16.0;
@@ -29,6 +30,6 @@ class WifiSetupConstants {
 
   // Spacing
   static const double padding = 16.0;
-  static const double largePadding = 24.0;
+  static const double largePadding = 30.0;
   static const double extraLargePadding = 32.0;
 }
