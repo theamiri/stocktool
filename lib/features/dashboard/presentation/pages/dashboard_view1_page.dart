@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../widgets/dashboard_button.dart';
 import '../widgets/dashboard_header.dart';
 import '../widgets/dashboard_footer.dart';
@@ -25,7 +26,7 @@ class DashboardView1Page extends StatelessWidget {
                   children: [
                     // Action buttons
                     DashboardButton(
-                      icon: Icons.devices,
+                      iconPath: 'assets/svgs/add-device.svg',
                       title: 'NEW DEVICE',
                       onPressed: () {
                         // TODO: Handle new device
@@ -34,7 +35,7 @@ class DashboardView1Page extends StatelessWidget {
                     const SizedBox(height: 16),
 
                     DashboardButton(
-                      icon: Icons.hub,
+                      iconPath: 'assets/svgs/setup_hub.svg',
                       title: 'SETUP HUB',
                       onPressed: () {
                         // TODO: Handle setup hub
@@ -43,16 +44,16 @@ class DashboardView1Page extends StatelessWidget {
                     const SizedBox(height: 16),
 
                     DashboardButton(
-                      icon: Icons.wifi,
+                      iconPath: 'assets/svgs/setup_wifi.svg',
                       title: 'SETUP WIFI',
                       onPressed: () {
-                        // TODO: Handle setup wifi
+                        context.push('/wifi-networks');
                       },
                     ),
                     const SizedBox(height: 16),
 
                     DashboardButton(
-                      icon: Icons.settings,
+                      iconPath: 'assets/svgs/configuration.svg',
                       title: 'CONFIGURATION',
                       onPressed: () {
                         // TODO: Handle configuration
@@ -61,7 +62,7 @@ class DashboardView1Page extends StatelessWidget {
                     const SizedBox(height: 16),
 
                     DashboardButton(
-                      icon: Icons.bar_chart,
+                      iconPath: 'assets/svgs/stock_details.svg',
                       title: 'STOCK DETAILS',
                       onPressed: () {
                         // TODO: Handle stock details

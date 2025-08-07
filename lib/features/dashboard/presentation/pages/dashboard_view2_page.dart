@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../constants/dashboard_constants.dart';
+import 'package:go_router/go_router.dart';
 import '../widgets/dashboard_header.dart';
 import '../widgets/dashboard_footer.dart';
 import '../widgets/dashboard_card.dart';
@@ -24,38 +24,6 @@ class DashboardView2Page extends StatelessWidget {
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
-                    // Setup button
-                    Container(
-                      width: double.infinity,
-                      height: DashboardConstants.buttonHeight,
-                      decoration: BoxDecoration(
-                        color: AppTheme.primaryGold,
-                        borderRadius: BorderRadius.circular(
-                          AppTheme.inputBorderRadius,
-                        ),
-                      ),
-                      child: Material(
-                        color: Colors.transparent,
-                        child: InkWell(
-                          onTap: () {
-                            // TODO: Handle setup
-                          },
-                          borderRadius: BorderRadius.circular(12),
-                          child: const Center(
-                            child: Text(
-                              'SETUP',
-                              style: TextStyle(
-                                color: AppTheme.headerTextColor,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-
                     // Grid of cards
                     Expanded(
                       child: GridView.count(
@@ -64,31 +32,38 @@ class DashboardView2Page extends StatelessWidget {
                         mainAxisSpacing: 16,
                         children: [
                           DashboardCard(
-                            icon: Icons.devices,
-                            title: 'NEW DEVICE',
+                            iconPath: 'assets/svgs/setup_hub.svg',
+                            title: 'SETUP DEVICE',
                             onPressed: () {
-                              // TODO: Handle new device
+                              // TODO: Handle setup device
                             },
                           ),
                           DashboardCard(
-                            icon: Icons.label,
-                            title: 'NEW LABEL',
+                            iconPath: 'assets/svgs/setup_hub.svg',
+                            title: 'SETUP HUB',
                             onPressed: () {
-                              // TODO: Handle new label
+                              // TODO: Handle setup hub
                             },
                           ),
                           DashboardCard(
-                            icon: Icons.wifi,
+                            iconPath: 'assets/svgs/setup_wifi.svg',
                             title: 'SETUP WIFI',
                             onPressed: () {
-                              // TODO: Handle setup wifi
+                              context.push('/wifi-networks');
                             },
                           ),
                           DashboardCard(
-                            icon: Icons.settings,
+                            iconPath: 'assets/svgs/configuration.svg',
                             title: 'CONFIGURATION',
                             onPressed: () {
                               // TODO: Handle configuration
+                            },
+                          ),
+                          DashboardCard(
+                            iconPath: 'assets/svgs/stock_details.svg',
+                            title: 'STOCK DETAILS',
+                            onPressed: () {
+                              // TODO: Handle stock details
                             },
                           ),
                         ],

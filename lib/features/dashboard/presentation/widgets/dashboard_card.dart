@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
-import '../../../../core/theme/app_theme.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../shared/widgets/index.dart';
 
 class DashboardCard extends StatelessWidget {
-  final IconData icon;
+  final String iconPath;
   final String title;
   final VoidCallback onPressed;
 
   const DashboardCard({
     super.key,
-    required this.icon,
+    required this.iconPath,
     required this.title,
     required this.onPressed,
   });
@@ -22,14 +22,30 @@ class DashboardCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // Icon
-          Icon(icon, color: AppTheme.cardTextColor, size: 32),
+          SvgPicture.asset(
+            iconPath,
+            width: 32,
+            height: 32,
+            colorFilter: const ColorFilter.mode(
+              Color(
+                0xFF666666,
+              ), // Grey color to make icons visible on white cards
+              BlendMode.srcIn,
+            ),
+          ),
           const SizedBox(height: 12),
 
           // Title
           Text(
             title,
             textAlign: TextAlign.center,
-            style: AppTheme.cardTitleStyle,
+            style: const TextStyle(
+              color: Color(
+                0xFF666666,
+              ), // Grey color for better contrast on white cards
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ],
       ),

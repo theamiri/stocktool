@@ -17,27 +17,24 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   bool _isFirebaseInitialized = false;
-  bool _hasNavigated = false; // Prevent navigation race condition
   String? _error;
-  Timer? _timeoutTimer;
+  Timer? _initTimer;
 
   @override
   void initState() {
     super.initState();
-    _initializeAppAndWaitForAuth();
+    _initializeApp();
   }
 
-  Future<void> _initializeAppAndWaitForAuth() async {
+  Future<void> _initializeApp() async {
     try {
-      // Wait for platform to be ready
-      await Future.delayed(const Duration(milliseconds: 500));
-
-      setState(() {
-        _isFirebaseInitialized = true;
+      _initTimer = Timer(const Duration(milliseconds: 1500), () {
+        if (mounted) {
+          setState(() {
+            _isFirebaseInitialized = true;
+          });
+        }
       });
-
-      // Set a maximum wait time for auth state resolution
-      _setupAuthTimeoutFallback();
     } catch (e) {
       setState(() {
         _error = e.toString();
@@ -45,124 +42,88 @@ class _SplashPageState extends State<SplashPage> {
     }
   }
 
-  void _setupAuthTimeoutFallback() {
-    // Fallback navigation after timeout if no auth state change occurs
-    _timeoutTimer = Timer(const Duration(seconds: 3), () {
-      if (mounted && !_hasNavigated) {
-        final authBloc = context.read<AuthBloc>();
-        final authState = authBloc.state;
-
-        // Only navigate if still in initial state (auth stream didn't fire)
-        if (authState is AuthInitial) {
-          _navigateToLogin();
-        }
-      }
-    });
-  }
-
   @override
   void dispose() {
-    _timeoutTimer?.cancel();
+    _initTimer?.cancel();
     super.dispose();
-  }
-
-  void _navigateToLogin() {
-    if (mounted && !_hasNavigated) {
-      _hasNavigated = true;
-      context.go('/login');
-    }
-  }
-
-  void _navigateToDashboard() {
-    if (mounted && !_hasNavigated) {
-      _hasNavigated = true;
-      context.go('/dashboard');
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        // Handle auth state changes to prevent race conditions
+        // Only navigate if we're actually on the splash page
+        // This prevents navigation during hot reload when user is on other pages
+        final currentRoute = GoRouterState.of(context).matchedLocation;
+        if (currentRoute != '/') {
+          return; // Don't navigate if we're not on splash page
+        }
+
         if (state is Authenticated) {
-          _navigateToDashboard();
+          context.go('/dashboard');
         } else if (state is Unauthenticated) {
-          _navigateToLogin();
+          context.go('/login');
         }
       },
       child: Scaffold(
-        backgroundColor: AppTheme.backgroundColor,
-        body: Stack(
-          children: [
-            Positioned(
-              bottom: 0,
-              left: 0,
-              right: 0,
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.4,
-                child: SvgPicture.asset(
-                  'assets/svgs/mesh.svg',
-                  fit: BoxFit.cover,
-                  colorFilter: ColorFilter.mode(
-                    AppTheme.primaryGold,
-                    BlendMode.srcIn,
+      backgroundColor: AppTheme.backgroundColor,
+      body: Stack(
+        children: [
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height * 0.4,
+              child: SvgPicture.asset(
+                'assets/svgs/mesh.svg',
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AppLogo(
+                  width: SplashConstants.logoSize,
+                  height: SplashConstants.logoSize,
+                ),
+                SizedBox(height: SplashConstants.subtitleBottomSpacing),
+                Text(
+                  SplashConstants.locationText,
+                  style: TextStyle(
+                    fontSize: SplashConstants.locationFontSize,
+                    fontWeight: FontWeight.w400,
+                    color: AppTheme.textColor,
+                    letterSpacing: 4.0,
                   ),
                 ),
-              ),
-            ),
-            // Main content
-            Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Logo
-                  AppLogo(
-                    width: SplashConstants.logoSize,
-                    height: SplashConstants.logoSize,
-                  ),
-
-                  SizedBox(height: SplashConstants.subtitleBottomSpacing),
-
-                  // Location text
-                  Text(
-                    SplashConstants.locationText,
-                    style: TextStyle(
-                      fontSize: SplashConstants.locationFontSize,
-                      fontWeight: FontWeight.w400,
-                      color: AppTheme.textColor,
-                      letterSpacing: 4.0,
-                    ),
-                  ),
-
-                  // Loading indicator if Firebase is initializing
-                  if (!_isFirebaseInitialized && _error == null) ...[
-                    const SizedBox(height: 20),
-                    const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          AppTheme.primaryGold,
-                        ),
+                if (!_isFirebaseInitialized && _error == null) ...[
+                  const SizedBox(height: 20),
+                  const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        AppTheme.primaryGold,
                       ),
                     ),
-                  ],
-
-                  // Error message if Firebase failed
-                  if (_error != null) ...[
-                    const SizedBox(height: 20),
-                    Text(
-                      'Initialization failed',
-                      style: TextStyle(color: Colors.red, fontSize: 12),
-                    ),
-                  ],
+                  ),
                 ],
-              ),
+                if (_error != null) ...[
+                  const SizedBox(height: 20),
+                  Text(
+                    'Initialization failed',
+                    style: TextStyle(color: Colors.red, fontSize: 12),
+                  ),
+                ],
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
       ),
     );
   }
