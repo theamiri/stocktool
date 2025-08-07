@@ -11,7 +11,7 @@ import '../../features/wifi_setup/presentation/pages/wifi_connected_page.dart';
 class AppRouter {
   static GoRouter createRouter() {
     return GoRouter(
-      initialLocation: '/wifi-networks-list',
+      initialLocation: '/',
       routes: [
         GoRoute(
           path: '/',
@@ -47,7 +47,10 @@ class AppRouter {
         GoRoute(
           path: '/wifi-setup',
           name: 'wifi-setup',
-          builder: (context, state) => const WifiSetupPage(),
+          builder: (context, state) {
+            final networkName = state.uri.queryParameters['network'];
+            return WifiSetupPage(selectedNetworkName: networkName);
+          },
         ),
         GoRoute(
           path: '/wifi-connected',

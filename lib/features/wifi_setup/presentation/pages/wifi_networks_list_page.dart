@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:stocktool/core/theme/app_theme.dart';
-import '../constants/wifi_setup_constants.dart';
 
 class WifiNetworksListPage extends StatelessWidget {
   const WifiNetworksListPage({super.key});
@@ -9,7 +8,6 @@ class WifiNetworksListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: AppTheme.primaryGold,
         elevation: 0,
@@ -77,7 +75,10 @@ class WifiNetworksListPage extends StatelessWidget {
         trailing: const Icon(Icons.wifi, color: Colors.grey, size: 24),
         onTap: () {
           // Navigate to WiFi setup page when a network is selected
-          context.push('/wifi-setup');
+          final networkName = networkNames[index];
+          final url = '/wifi-setup?network=${Uri.encodeComponent(networkName)}';
+          print('Navigating to: $url with network: $networkName');
+          context.push(url);
         },
       ),
     );
