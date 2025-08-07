@@ -1,4 +1,4 @@
-# stocktool
+# stocktools
 
 A new Flutter project.
 

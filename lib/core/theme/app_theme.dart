@@ -1,160 +1,192 @@
 import 'package:flutter/material.dart';
+import 'app_colors.dart';
+import 'app_text_styles.dart';
 
 class AppTheme {
-  // Colors
-  static const Color primaryGold = Color(0xFFE6A72C);
-  static const Color lightGold = Color(0xFFF7D794);
-  static const Color backgroundColor = Colors.white;
-  static const Color textColor = Colors.black;
-  static const Color headerTextColor = Colors.white;
-  static const Color cardBackgroundColor = Colors.white;
-  static const Color cardTextColor = Colors.grey;
-  static const Color inactiveFieldColor = Color(0xFFF5F5F5);
-  static const Color borderColor = Color(0xFFE0E0E0);
+  static ThemeData get lightTheme {
+    return ThemeData(
+      useMaterial3: true,
 
-  // Text Styles
-  static const TextStyle appTitleStyle = TextStyle(
-    fontSize: 32,
-    fontWeight: FontWeight.w900,
-    color: textColor,
-    letterSpacing: 2.0,
-  );
+      // Color Scheme
+      colorScheme: const ColorScheme.light(
+        primary: AppColors.primary,
+        primaryContainer: AppColors.primaryLight,
+        secondary: AppColors.primary,
+        surface: AppColors.surface,
+        background: AppColors.background,
+        error: AppColors.error,
+        onPrimary: AppColors.textOnPrimary,
+        onSecondary: AppColors.textOnPrimary,
+        onSurface: AppColors.textPrimary,
+        onBackground: AppColors.textPrimary,
+        onError: AppColors.textOnPrimary,
+      ),
 
-  static const TextStyle appSubtitleStyle = TextStyle(
-    fontSize: 18,
-    fontStyle: FontStyle.italic,
-    fontWeight: FontWeight.w300,
-    color: textColor,
-  );
+      // Scaffold
+      scaffoldBackgroundColor: AppColors.background,
 
-  static const TextStyle userNameStyle = TextStyle(
-    fontSize: 24,
-    fontWeight: FontWeight.bold,
-    color: headerTextColor,
-  );
+      // App Bar Theme
+      appBarTheme: const AppBarTheme(
+        backgroundColor: AppColors.headerBackground,
+        foregroundColor: AppColors.headerText,
+        elevation: 0,
+        centerTitle: true,
+        titleTextStyle: AppTextStyles.header,
+        iconTheme: IconThemeData(color: AppColors.iconOnPrimary, size: 24),
+      ),
 
-  static const TextStyle userEmailStyle = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w400,
-    color: headerTextColor,
-  );
+      // Card Theme
+      cardTheme: CardThemeData(
+        color: AppColors.cardBackground,
+        elevation: 2,
+        shadowColor: AppColors.cardShadow,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12),
+          side: const BorderSide(color: AppColors.cardBorder, width: 1),
+        ),
+      ),
 
-  static const TextStyle buttonTextStyle = TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.bold,
-    color: headerTextColor,
-  );
+      // Button Themes
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.buttonPrimary,
+          foregroundColor: AppColors.textOnPrimary,
+          elevation: 2,
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          textStyle: AppTextStyles.button,
+        ),
+      ),
 
-  static const TextStyle cardTitleStyle = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
-    color: cardTextColor,
-  );
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: AppColors.buttonPrimary,
+          side: const BorderSide(color: AppColors.buttonPrimary),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          textStyle: AppTextStyles.buttonSecondary,
+        ),
+      ),
 
-  static const TextStyle linkTextStyle = TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.bold,
-    color: primaryGold,
-  );
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: AppColors.primary,
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          textStyle: AppTextStyles.link,
+        ),
+      ),
 
-  static const TextStyle hintTextStyle = TextStyle(
-    fontSize: 14,
-    color: Colors.grey,
-  );
+      // Input Decoration Theme
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.inputBackground,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: AppColors.inputBorder),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: AppColors.inputBorder),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: AppColors.inputFocused, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: const BorderSide(color: AppColors.error),
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 12,
+        ),
+        labelStyle: AppTextStyles.inputLabel,
+        hintStyle: AppTextStyles.inputLabel,
+      ),
 
-  // Dimensions
-  static const double logoSize = 120.0;
-  static const double smallLogoSize = 40.0;
-  static const double buttonHeight = 50.0;
-  static const double cardHeight = 120.0;
-  static const double headerHeight = 200.0;
-  static const double inputBorderRadius = 12.0;
-  static const double cardBorderRadius = 12.0;
+      // Text Theme
+      textTheme: const TextTheme(
+        displayLarge: AppTextStyles.displayLarge,
+        displayMedium: AppTextStyles.displayMedium,
+        headlineLarge: AppTextStyles.title,
+        headlineMedium: AppTextStyles.title,
+        headlineSmall: AppTextStyles.subtitle,
+        titleLarge: AppTextStyles.title,
+        titleMedium: AppTextStyles.subtitle,
+        titleSmall: AppTextStyles.body,
+        bodyLarge: AppTextStyles.body,
+        bodyMedium: AppTextStyles.body,
+        bodySmall: AppTextStyles.bodySecondary,
+        labelLarge: AppTextStyles.button,
+        labelMedium: AppTextStyles.featureButton,
+        labelSmall: AppTextStyles.caption,
+      ),
 
-  // Spacing
-  static const double paddingSmall = 8.0;
-  static const double paddingMedium = 16.0;
-  static const double paddingLarge = 20.0;
-  static const double paddingExtraLarge = 24.0;
-  static const double paddingHuge = 32.0;
+      // Icon Theme
+      iconTheme: const IconThemeData(color: AppColors.iconPrimary, size: 24),
 
-  // Shadows
-  static List<BoxShadow> cardShadow = [
-    BoxShadow(
-      color: Colors.grey.withValues(alpha: 0.1),
-      spreadRadius: 1,
-      blurRadius: 4,
-      offset: const Offset(0, 2),
-    ),
-  ];
+      // Divider Theme
+      dividerTheme: const DividerThemeData(
+        color: AppColors.divider,
+        thickness: 1,
+        space: 1,
+      ),
 
-  static List<BoxShadow> buttonShadow = [
-    BoxShadow(
-      color: Colors.black.withValues(alpha: 0.1),
-      spreadRadius: 1,
-      blurRadius: 4,
-      offset: const Offset(0, 2),
-    ),
-  ];
+      // Floating Action Button Theme
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: AppColors.buttonPrimary,
+        foregroundColor: AppColors.textOnPrimary,
+        elevation: 4,
+      ),
 
-  // Input Decoration
-  static InputDecoration inputDecoration({
-    String? hintText,
-    IconData? prefixIcon,
-    Widget? suffixIcon,
-  }) {
-    return InputDecoration(
-      hintText: hintText,
-      prefixIcon: prefixIcon != null
-          ? Icon(prefixIcon, color: Colors.grey)
-          : null,
-      suffixIcon: suffixIcon,
-      border: InputBorder.none,
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: paddingMedium,
-        vertical: paddingMedium,
+      // Bottom Navigation Bar Theme
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: AppColors.surface,
+        selectedItemColor: AppColors.primary,
+        unselectedItemColor: AppColors.textSecondary,
+        type: BottomNavigationBarType.fixed,
+        elevation: 8,
+      ),
+
+      // Chip Theme
+      chipTheme: ChipThemeData(
+        backgroundColor: AppColors.inputBackground,
+        selectedColor: AppColors.primary,
+        disabledColor: AppColors.border,
+        labelStyle: AppTextStyles.body,
+        secondaryLabelStyle: AppTextStyles.body,
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+
+      // Switch Theme
+      switchTheme: SwitchThemeData(
+        thumbColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.selected)) {
+            return AppColors.primary;
+          }
+          return AppColors.textSecondary;
+        }),
+        trackColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.selected)) {
+            return AppColors.primaryLight;
+          }
+          return AppColors.border;
+        }),
+      ),
+
+      // Checkbox Theme
+      checkboxTheme: CheckboxThemeData(
+        fillColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.selected)) {
+            return AppColors.primary;
+          }
+          return Colors.transparent;
+        }),
+        checkColor: MaterialStateProperty.all(AppColors.textOnPrimary),
+        side: const BorderSide(color: AppColors.border),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       ),
     );
   }
-
-  // Button Styles
-  static ButtonStyle primaryButtonStyle = ElevatedButton.styleFrom(
-    backgroundColor: primaryGold,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(inputBorderRadius),
-    ),
-    padding: const EdgeInsets.symmetric(vertical: paddingMedium),
-  );
-
-  // Container Decorations
-  static BoxDecoration inputContainerDecoration({
-    Color? backgroundColor,
-    Color? borderColor,
-    bool isFocused = false,
-  }) {
-    return BoxDecoration(
-      color:
-          backgroundColor ??
-          (isFocused ? cardBackgroundColor : inactiveFieldColor),
-      borderRadius: BorderRadius.circular(inputBorderRadius),
-      border: Border.all(
-        color: borderColor ?? (isFocused ? primaryGold : AppTheme.borderColor),
-        width: 1,
-      ),
-    );
-  }
-
-  static BoxDecoration cardDecoration = BoxDecoration(
-    color: cardBackgroundColor,
-    borderRadius: BorderRadius.circular(cardBorderRadius),
-    boxShadow: cardShadow,
-  );
-
-  static BoxDecoration headerDecoration = const BoxDecoration(
-    color: primaryGold,
-    borderRadius: BorderRadius.only(
-      bottomLeft: Radius.circular(20),
-      bottomRight: Radius.circular(20),
-    ),
-  );
 }
