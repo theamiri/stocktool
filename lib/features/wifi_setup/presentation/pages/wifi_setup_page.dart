@@ -19,8 +19,33 @@ class WifiSetupPage extends StatelessWidget {
         ),
       ),
       body: SafeArea(
+        bottom: false,
         child: Stack(
           children: [
+            // Footer with logo
+            Positioned(
+              right: 0,
+              left: 0,
+              bottom: 50,
+              child: Center(
+                child: SvgPicture.asset(
+                  'assets/svgs/stock_tools_icon.svg',
+                  width: 170,
+                ),
+              ),
+            ),
+            Positioned(
+              right: 0,
+              left: 0,
+              bottom: -60,
+              child: SvgPicture.asset(
+                'assets/svgs/mesh.svg',
+                colorFilter: ColorFilter.mode(
+                  Colors.white.withOpacity(0.5),
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
             // Main content
             Padding(
               padding: const EdgeInsets.all(40.0),
@@ -85,19 +110,6 @@ class WifiSetupPage extends StatelessWidget {
                     ),
                   ),
                 ],
-              ),
-            ),
-
-            // Footer with logo
-            Positioned(
-              right: 0,
-              left: 0,
-              bottom: 20,
-              child: Center(
-                child: SvgPicture.asset(
-                  'assets/svgs/stock_tools_icon.svg',
-                  width: 170,
-                ),
               ),
             ),
           ],

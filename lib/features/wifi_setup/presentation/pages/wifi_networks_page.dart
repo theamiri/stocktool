@@ -8,68 +8,44 @@ class WifiNetworksPage extends StatefulWidget {
 }
 
 class _WifiNetworksPageState extends State<WifiNetworksPage> {
-  int _selectedNetworkIndex = 6; // 7th network (index 6) is selected
+  int? _selectedNetworkIndex; // No network is selected by default
 
   final List<String> _networks = [
-    'ABCDEFGH',
-    'XXXXXXXXXX',
-    'XXXXXXXXXX',
-    'XXXXXXXXXX',
-    'XXXXXXXXXX',
-    'XXXXXXXXXX',
-    'XXXXXXXXXX', // This one is selected
-    'XXXXXXXXXX',
-    'XXXXXXXXXX',
+    'HomeWiFi_5G',
+    'CoffeeShopNet',
+    'Starlink-Guest',
+    'Netgear_24',
+    'TP-Link_Office',
+    'XfinityHome',
+    'MySpectrumWiFi',
+    'PublicLibraryWiFi',
+    'Airport_Free_WiFi',
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFE6A72C), // Mustard yellow
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back, color: Colors.white, size: 24),
+        ),
+        centerTitle: true,
+        title: const Text(
+          'WIFI NETWORKS',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
       body: Column(
         children: [
-          // Header
-          Container(
-            width: double.infinity,
-            color: const Color(0xFFE6A72C), // Mustard yellow
-            child: SafeArea(
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Row(
-                  children: [
-                    // Back button
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.white,
-                        size: 24,
-                      ),
-                    ),
-
-                    // Title
-                    const Expanded(
-                      child: Text(
-                        'WIFI NETWORKS',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-
-                    // Empty space for centering
-                    const SizedBox(width: 48),
-                  ],
-                ),
-              ),
-            ),
-          ),
-
           // Network list
           Expanded(
             child: ListView.builder(
@@ -95,7 +71,7 @@ class _WifiNetworksPageState extends State<WifiNetworksPage> {
                     },
                     child: Container(
                       width: double.infinity,
-                      height: 60,
+                      height: 70,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(8),
@@ -104,7 +80,7 @@ class _WifiNetworksPageState extends State<WifiNetworksPage> {
                             : null,
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.1),
+                            color: Colors.black.withOpacity(0.1),
                             spreadRadius: 1,
                             blurRadius: 4,
                             offset: const Offset(0, 2),
