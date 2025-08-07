@@ -34,34 +34,11 @@ class _QrScannerPageState extends State<QrScannerPage> {
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // Network indicators
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.signal_cellular_4_bar,
-                        color: Colors.white,
-                        size: 16,
-                      ),
-                      const SizedBox(width: 4),
-                      Icon(Icons.wifi, color: Colors.white, size: 16),
-                      const SizedBox(width: 4),
-                      Icon(Icons.battery_full, color: Colors.white, size: 16),
-                    ],
-                  ),
-
-                  // Time
-                  const Text(
-                    '12:30',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
+              child: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
               ),
             ),
           ),
@@ -135,7 +112,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
                         border: Border.all(color: Colors.white, width: 2),
                       ),
                       child: const Icon(
-                        Icons.photo_library,
+                        Icons.rotate_right,
                         color: Colors.white,
                         size: 24,
                       ),
@@ -197,7 +174,7 @@ class _QrScannerPageState extends State<QrScannerPage> {
                           },
                           borderRadius: BorderRadius.circular(6),
                           child: Icon(
-                            _isFlashOn ? Icons.videocam : Icons.videocam_off,
+                            Icons.videocam,
                             color: Colors.white,
                             size: 24,
                           ),

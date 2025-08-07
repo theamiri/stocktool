@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../../core/theme/app_colors.dart';
 
 class QrSetupPage extends StatelessWidget {
   const QrSetupPage({super.key});
@@ -9,227 +8,93 @@ class QrSetupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
+      appBar: // AppBar with back button
+      AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios),
+        ),
+      ),
       body: Stack(
         children: [
-          // Background mesh pattern
-          Positioned.fill(
-            child: SvgPicture.asset('assets/svgs/mesh.svg', fit: BoxFit.cover),
+          // Footer with logo
+          Positioned(
+            right: 0,
+            left: 0,
+            bottom: 50,
+            child: Center(
+              child: SvgPicture.asset(
+                'assets/svgs/stock_tools_icon.svg',
+                width: 170,
+              ),
+            ),
           ),
-
+          Positioned(
+            right: 0,
+            left: 0,
+            bottom: -60,
+            child: SvgPicture.asset(
+              'assets/svgs/mesh.svg',
+              colorFilter: ColorFilter.mode(
+                Colors.white.withOpacity(0.5),
+                BlendMode.srcIn,
+              ),
+            ),
+          ),
           // Main content
           SafeArea(
             child: Column(
               children: [
-                // Back button
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.white,
-                          size: 24,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
                 // Main content area
                 Expanded(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Device/Laptop icon with plus
-                      SizedBox(
-                        width: 200,
-                        height: 200,
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            // Main device icon
-                            Container(
-                              width: 180,
-                              height: 120,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: Colors.white,
-                                  width: 4,
-                                ),
-                              ),
-                              child: Container(
-                                margin: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(8),
-                                  border: Border.all(
-                                    color: Colors.white,
-                                    width: 2,
-                                  ),
-                                ),
-                              ),
-                            ),
-
-                            // Laptop base
-                            Positioned(
-                              bottom: 20,
-                              child: Container(
-                                width: 200,
-                                height: 16,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                              ),
-                            ),
-
-                            // Plus icon circle
-                            Positioned(
-                              top: 0,
-                              right: 0,
-                              child: Container(
-                                width: 60,
-                                height: 60,
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.add,
-                                  color: AppColors.primary,
-                                  size: 30,
-                                ),
-                              ),
-                            ),
-
-                            // Phone icon
-                            Positioned(
-                              bottom: 0,
-                              right: 20,
-                              child: Container(
-                                width: 30,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(6),
-                                  border: Border.all(
-                                    color: Colors.white,
-                                    width: 2,
-                                  ),
-                                ),
-                                child: Column(
-                                  children: [
-                                    Expanded(
-                                      child: Container(
-                                        margin: const EdgeInsets.all(2),
-                                        decoration: BoxDecoration(
-                                          color: AppColors.primary,
-                                          borderRadius: BorderRadius.circular(
-                                            2,
-                                          ),
-                                        ),
-                                        child: const Center(
-                                          child: Icon(
-                                            Icons.star,
-                                            color: Colors.white,
-                                            size: 12,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Container(
-                                      width: 8,
-                                      height: 8,
-                                      margin: const EdgeInsets.only(bottom: 4),
-                                      decoration: const BoxDecoration(
-                                        color: Colors.grey,
-                                        shape: BoxShape.circle,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
+                      SvgPicture.asset(
+                        'assets/svgs/add-device.svg',
+                        width: 170,
                       ),
-
-                      const SizedBox(height: 120),
-
+                      const SizedBox(height: 40),
                       // Scan QR Code button
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 40),
-                        child: Container(
+                        child: SizedBox(
                           width: double.infinity,
                           height: 60,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.1),
-                                blurRadius: 4,
-                                offset: const Offset(0, 2),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor: Colors.black,
+                              elevation: 4,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                            ],
-                          ),
-                          child: Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.pushNamed(context, '/qr-scanner');
-                              },
-                              borderRadius: BorderRadius.circular(8),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  SvgPicture.asset(
-                                    'assets/svgs/qrcode.svg',
-                                    width: 24,
-                                    height: 24,
-                                  ),
-                                  const SizedBox(width: 12),
-                                  const Text(
-                                    'SCAN QR CODE',
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                ],
-                              ),
+                              shadowColor: Colors.black.withOpacity(0.1),
+                              padding: EdgeInsets.zero,
+                            ),
+                            onPressed: () {
+                              Navigator.pushNamed(context, '/qr-scanner');
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/svgs/qrcode.svg',
+                                  width: 32,
+                                  height: 32,
+                                ),
+                                const SizedBox(width: 12),
+                                const Text(
+                                  'SCAN QR CODE',
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // Footer with logo
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    children: [
-                      Image.asset(
-                        'assets/images/app_logo.png',
-                        width: 60,
-                        height: 60,
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'STOCK TOOLS',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
                         ),
                       ),
                     ],
