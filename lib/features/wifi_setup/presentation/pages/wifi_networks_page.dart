@@ -39,7 +39,7 @@ class WifiNetworksPage extends StatelessWidget {
             // WiFi networks button
             WifiNetworksButton(
               onPressed: () {
-                context.push('/wifi-setup');
+                context.push('/wifi-networks-list');
               },
             ),
             Spacer(),

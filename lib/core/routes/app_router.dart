@@ -4,13 +4,14 @@ import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/signup_page.dart';
 import '../../features/dashboard/presentation/pages/dashboard_page.dart';
 import '../../features/wifi_setup/presentation/pages/wifi_networks_page.dart';
+import '../../features/wifi_setup/presentation/pages/wifi_networks_list_page.dart';
 import '../../features/wifi_setup/presentation/pages/wifi_setup_page.dart';
 import '../../features/wifi_setup/presentation/pages/wifi_connected_page.dart';
 
 class AppRouter {
   static GoRouter createRouter() {
     return GoRouter(
-      initialLocation: '/wifi-networks',
+      initialLocation: '/wifi-networks-list',
       routes: [
         GoRoute(
           path: '/',
@@ -37,6 +38,11 @@ class AppRouter {
           path: '/wifi-networks',
           name: 'wifi-networks',
           builder: (context, state) => const WifiNetworksPage(),
+        ),
+        GoRoute(
+          path: '/wifi-networks-list',
+          name: 'wifi-networks-list',
+          builder: (context, state) => const WifiNetworksListPage(),
         ),
         GoRoute(
           path: '/wifi-setup',
