@@ -7,6 +7,8 @@ import 'features/wifi_setup/presentation/pages/wifi_setup_page.dart';
 import 'features/wifi_setup/presentation/pages/wifi_networks_page.dart';
 import 'features/wifi_setup/presentation/pages/wifi_password_page.dart';
 import 'features/wifi_setup/presentation/pages/wifi_connected_page.dart';
+import 'features/device/presentation/pages/qr_setup_page.dart';
+import 'features/device/presentation/pages/qr_scanner_page.dart';
 import 'core/theme/index.dart';
 
 void main() {
@@ -32,6 +34,8 @@ class MyApp extends StatelessWidget {
         '/wifi-networks': (context) => const WifiNetworksPage(),
         '/wifi-password': (context) => const WifiPasswordPage(),
         '/wifi-connected': (context) => const WifiConnectedPage(),
+        '/qr-setup': (context) => const QrSetupPage(),
+        '/qr-scanner': (context) => const QrScannerPage(),
       },
     );
   }

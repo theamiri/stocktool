@@ -19,7 +19,7 @@ class DashboardListView extends StatelessWidget {
                   icon: 'assets/svgs/add-device.svg',
                   text: 'NEW DEVICE',
                   onTap: () {
-                    // TODO: Navigate to new device
+                    Navigator.pushNamed(context, '/qr-setup');
                   },
                 ),
                 const SizedBox(height: 16),
@@ -78,7 +78,7 @@ class DashboardListView extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        height: 60,
+        height: 70,
         decoration: BoxDecoration(
           color: AppColors.primary,
           borderRadius: BorderRadius.circular(8),
@@ -94,6 +94,8 @@ class DashboardListView extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Icon
               SvgPicture.asset(

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/theme/index.dart';
-import '../../../../shared/widgets/index.dart';
 
 class DashboardGridView extends StatelessWidget {
   const DashboardGridView({super.key});
@@ -12,16 +11,6 @@ class DashboardGridView extends StatelessWidget {
       padding: const EdgeInsets.all(20.0),
       child: Column(
         children: [
-          // Setup button
-          PrimaryButton(
-            text: 'SETUP',
-            onPressed: () {
-              // TODO: Handle setup action
-            },
-          ),
-
-          const SizedBox(height: 32),
-
           // Grid of feature cards
           Expanded(
             child: GridView.count(
@@ -33,12 +22,12 @@ class DashboardGridView extends StatelessWidget {
                   icon: 'assets/svgs/add-device.svg',
                   title: 'NEW DEVICE',
                   onTap: () {
-                    // TODO: Navigate to new device
+                    Navigator.pushNamed(context, '/qr-setup');
                   },
                 ),
                 _buildFeatureCard(
-                  icon: 'assets/svgs/stock_tools_icon.svg',
-                  title: 'NEW LABEL',
+                  icon: 'assets/svgs/setup_hub.svg',
+                  title: 'SETUP HUB',
                   onTap: () {
                     // TODO: Navigate to new label
                   },
@@ -50,9 +39,17 @@ class DashboardGridView extends StatelessWidget {
                     Navigator.pushNamed(context, '/wifi-setup');
                   },
                 ),
+
                 _buildFeatureCard(
                   icon: 'assets/svgs/configuration.svg',
                   title: 'CONFIGURATION',
+                  onTap: () {
+                    // TODO: Navigate to configuration
+                  },
+                ),
+                _buildFeatureCard(
+                  icon: 'assets/svgs/stock_details.svg',
+                  title: 'STOCK DETAILS',
                   onTap: () {
                     // TODO: Navigate to configuration
                   },
