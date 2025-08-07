@@ -11,11 +11,6 @@ class WifiConnectedPage extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            // Background pattern (subtle geometric pattern)
-            Positioned.fill(
-              child: CustomPaint(painter: BackgroundPatternPainter()),
-            ),
-
             // Main content
             Padding(
               padding: const EdgeInsets.all(20.0),
@@ -136,26 +131,4 @@ class WifiConnectedPage extends StatelessWidget {
       ),
     );
   }
-}
-
-// Custom painter for background pattern
-class BackgroundPatternPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = Colors.white.withValues(alpha: 0.1)
-      ..style = PaintingStyle.fill;
-
-    // Draw subtle geometric pattern
-    for (int i = 0; i < size.width; i += 30) {
-      for (int j = 0; j < size.height; j += 30) {
-        if ((i + j) % 60 == 0) {
-          canvas.drawCircle(Offset(i.toDouble(), j.toDouble()), 2, paint);
-        }
-      }
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

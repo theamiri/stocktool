@@ -63,9 +63,13 @@ class _WifiNetworksPageState extends State<WifiNetworksPage> {
                       });
                       // Navigate to password screen after a short delay
                       final navigator = Navigator.of(context);
+                      final selectedNetwork = _networks[index];
                       Future.delayed(const Duration(milliseconds: 500), () {
                         if (mounted) {
-                          navigator.pushNamed('/wifi-password');
+                          navigator.pushNamed(
+                            '/wifi-password',
+                            arguments: selectedNetwork,
+                          );
                         }
                       });
                     },
