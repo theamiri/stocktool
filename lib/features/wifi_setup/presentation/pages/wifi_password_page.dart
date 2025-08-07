@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../shared/widgets/index.dart';
 
 class WifiPasswordPage extends StatefulWidget {
@@ -18,7 +17,6 @@ class _WifiPasswordPageState extends State<WifiPasswordPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Get the selected network name from arguments
     final String? networkName =
         ModalRoute.of(context)?.settings.arguments as String?;
     if (networkName != null && _networkController.text.isEmpty) {

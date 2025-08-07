@@ -7,123 +7,98 @@ class WifiConnectedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFE6A72C), // Mustard yellow background
+      backgroundColor: Theme.of(context).colorScheme.primary,
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: Theme.of(context).colorScheme.primary,
+          ),
+        ),
+      ),
       body: SafeArea(
+        bottom: false,
         child: Stack(
           children: [
+            // Footer with logo
+            Positioned(
+              right: 0,
+              left: 0,
+              bottom: 50,
+              child: Center(
+                child: SvgPicture.asset(
+                  'assets/svgs/stock_tools_icon.svg',
+                  width: 170,
+                ),
+              ),
+            ),
+            Positioned(
+              right: 0,
+              left: 0,
+              bottom: -60,
+              child: SvgPicture.asset(
+                'assets/svgs/mesh.svg',
+                colorFilter: ColorFilter.mode(
+                  Colors.white.withOpacity(0.5),
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
             // Main content
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
                 children: [
-                  // Back button
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(
-                        Icons.arrow_back,
-                        color: Colors.black,
-                        size: 24,
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 40),
-
                   // Success content
-                  Expanded(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        // Success card
-                        Container(
-                          width: 280,
-                          height: 280,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.1),
-                                spreadRadius: 1,
-                                blurRadius: 8,
-                                offset: const Offset(0, 4),
-                              ),
-                            ],
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              // Success circle with checkmark
-                              Container(
-                                width: 120,
-                                height: 120,
-                                decoration: const BoxDecoration(
-                                  color: Color(0xFFE6A72C), // Mustard yellow
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Center(
-                                  child: Icon(
-                                    Icons.check,
-                                    color: Colors.white,
-                                    size: 60,
-                                  ),
-                                ),
-                              ),
-
-                              const SizedBox(height: 24),
-
-                              // CONNECTED text
-                              const Text(
-                                'CONNECTED',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Footer with logo
-            Positioned(
-              bottom: 20,
-              left: 0,
-              right: 0,
-              child: Center(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Logo
-                    SvgPicture.asset(
-                      'assets/svgs/stock_tools_icon.svg',
-                      width: 40,
-                      height: 40,
-                    ),
-
-                    const SizedBox(width: 12),
-
-                    // App name
-                    const Text(
-                      'STOCK TOOLS',
-                      style: TextStyle(
+                  Spacer(),
+                  Center(
+                    child: Container(
+                      width: 280,
+                      height: 350,
+                      decoration: BoxDecoration(
                         color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.1),
+                            spreadRadius: 1,
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          // Success circle with checkmark
+                          SvgPicture.asset(
+                            'assets/svgs/wifi_icon.svg',
+                            width: 200,
+                            height: 200,
+                            colorFilter: ColorFilter.mode(
+                              Theme.of(context).colorScheme.primary,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+
+                          const SizedBox(height: 24),
+
+                          // CONNECTED text
+                          const Text(
+                            'CONNECTED',
+                            style: TextStyle(color: Colors.black, fontSize: 24),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                  Spacer(),
+                ],
               ),
             ),
           ],
