@@ -48,67 +48,61 @@ class WifiSetupPage extends StatelessWidget {
             ),
             // Main content
             Padding(
-              padding: const EdgeInsets.all(40.0),
+              padding: const EdgeInsets.symmetric(horizontal: 40.0),
               child: Column(
                 children: [
-                  // WiFi icon section
-                  Expanded(
-                    child: Column(
+                  const Spacer(),
+                  Center(
+                    child: SvgPicture.asset(
+                      'assets/svgs/wifi_icon.svg',
+                      width: 230,
+                      height: 230,
+                    ),
+                  ),
+
+                  const SizedBox(height: 40),
+                  // WiFi Networks button
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      elevation: 4,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      shadowColor: Colors.black.withOpacity(0.1),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 20,
+                      ),
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/wifi-networks');
+                    },
+                    child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Center(
-                          child: SvgPicture.asset(
-                            'assets/svgs/wifi_icon.svg',
-                            width: 230,
-                            height: 230,
+                        SvgPicture.asset(
+                          'assets/svgs/router.svg',
+                          width: 24,
+                          height: 24,
+                          colorFilter: const ColorFilter.mode(
+                            Colors.grey,
+                            BlendMode.srcIn,
                           ),
                         ),
-
-                        const SizedBox(height: 40),
-                        // WiFi Networks button
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            elevation: 4,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            shadowColor: Colors.black.withOpacity(0.1),
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 20,
-                              vertical: 20,
-                            ),
-                          ),
-                          onPressed: () {
-                            Navigator.pushNamed(context, '/wifi-networks');
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SvgPicture.asset(
-                                'assets/svgs/router.svg',
-                                width: 24,
-                                height: 24,
-                                colorFilter: const ColorFilter.mode(
-                                  Colors.grey,
-                                  BlendMode.srcIn,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              const Text(
-                                'WIFI NETWORKS',
-                                style: TextStyle(
-                                  color: Colors.grey,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
+                        const SizedBox(width: 16),
+                        const Text(
+                          'WIFI NETWORKS',
+                          style: TextStyle(
+                            color: Colors.grey,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                       ],
                     ),
                   ),
+                  const Spacer(),
                 ],
               ),
             ),
