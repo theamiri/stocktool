@@ -57,9 +57,6 @@ class DashboardGridView extends StatelessWidget {
               ],
             ),
           ),
-
-          // Footer with logo
-          _buildFooter(),
         ],
       ),
     );
@@ -116,35 +113,6 @@ class DashboardGridView extends StatelessWidget {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildFooter() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          // Logo
-          SvgPicture.asset(
-            'assets/svgs/stock_tools_icon.svg',
-            width: 40,
-            height: 40,
-          ),
-
-          const SizedBox(width: 12),
-
-          // App name
-          const Text(
-            'STOCK TOOLS',
-            style: TextStyle(
-              color: AppColors.textPrimary,
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
       ),
     );
   }
