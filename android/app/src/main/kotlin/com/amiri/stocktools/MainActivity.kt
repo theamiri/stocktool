@@ -1,4 +1,4 @@
-package com.example.stocktools
+package com.amiri.stocktools
 
 import io.flutter.embedding.android.FlutterActivity
 
